@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400');
+
+* { box-sizing: border-box; }
+
+body, html {
+  margin: 0;
+  height: 100%;
+  color: #595e73;
+  font-family: Ubuntu, sans-serif;
+}
+
+a {
+  color: #595e73;
+  text-decoration: none;
+}
+
+.browser {
+  display: flex;
+  flex-direction: column;
+  max-width: 630px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+header {
+  margin: 15px 0;
+  display: flex;
+}
+
+header h1 {
+  font-size: 1rem;
+  margin: 0;
+  cursor: pointer;
+  flex-grow: 0;
+}
+
+input {
+  padding: 8px 12px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #ddd;
+  font-size: 0.8rem;
+  color: #333;
+  font-family: Ubuntu, sans-serif;
+}
+
+::-webkit-input-placeholder {
+  color: #e0e1e2;
+}
+
+.listing {
+  margin: 10px 0;
+  padding: 0 2px;
+  list-style: none;
+  font-size: 12px;
+}
+
+.listing li {
+  margin: 0 -10px;
+  padding: 0 10px;
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:hover { background: #fafafa; }
+}
+
+.listing li a {
+  padding: 8px 0;
+  line-height: 1rem;
+  display: flex;
+  flex-direction: row;
+
+  &:before {
+    content: '';
+    width: 16px;
+    margin-right: 6px;
+    background: url(icons/file.svg);
+  }
+}
+
+.name {
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+}
+
+.size {
+  flex-shrink: 0;
+  margin-left: 5px;
+  font-size: 0.6rem;
+  color: #888;
+}
+
+$file-types: ai, aif, avi, css, csv, doc, fla, html, iso, jpg, js, json, mkv, mp3,
+             mp4, pdf, png, psd, rtf, svg, txt, xls, zip, ogg, flac, wav, exe;
+
+@each $ext in $file-types {
+  li.#{$ext} a:before { background: url(icons/#{$ext}.svg) };
+}
+
+li.sh  a:before { background: url(icons/exe.svg) };
+li.gz  a:before { background: url(icons/zip.svg) };
+li.tar a:before { background: url(icons/zip.svg) };
+li.flv a:before { background: url(icons/fla.svg) };
+li.dir a:before { background: url(icons/folder.svg); }
