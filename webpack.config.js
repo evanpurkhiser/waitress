@@ -2,13 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const htmlTemplate = new HtmlWebpackPlugin({
   filename: '_static/index.html',
   template: 'app.html',
 });
 
-const commonChunk = new webpack.optimize.CommonsChunkPlugin({
+const vendorChunk = new webpack.optimize.CommonsChunkPlugin({
   name: 'vendor',
   minChunks: module => /node_modules/.test(module.resource),
 });
@@ -30,7 +31,7 @@ module.exports = {
     },
     {
       test: /\.scss$/,
-      use:  [ 'style-loader', 'css-loader', 'sass-loader' ],
+      use:  ExtractTextPlugin.extract([ 'css-loader', 'sass-loader' ]),
     },
     {
       test:    /\.svg$/,
@@ -46,11 +47,12 @@ module.exports = {
   },
   plugins: [
     htmlTemplate,
+    vendorChunk,
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    commonChunk,
     new webpack.optimize.CommonsChunkPlugin({ name: 'bundle', minChunks: Infinity }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new SpriteLoaderPlugin(),
+    new ExtractTextPlugin({ filename: '_static/[name].[contenthash].css' })
   ],
 };
