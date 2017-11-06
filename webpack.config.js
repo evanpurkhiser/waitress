@@ -1,10 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const htmlTemplate = new HtmlWebpackPlugin({
   filename: '_static/index.html',
-  template: 'index.html',
+  template: 'app.html',
 });
 
 const commonChunk = new webpack.optimize.CommonsChunkPlugin({
@@ -16,25 +17,31 @@ module.exports = {
   entry: './app.js',
   output: {
     path: path.resolve(__dirname, './dist/'),
-    filename: '_static/[name].js',
+    filename: '_static/[name].[hash].js',
     publicPath: '/',
   },
   devtool: 'source-map',
   devServer: { port: 9000, hot: true },
   module: {
-    loaders: [{
-      test:   /\.js$/,
-      loader: 'babel-loader',
-      query: { presets: ['env', 'stage-1', 'react'] },
+    rules: [{
+      test:    /\.js$/,
+      loader:  'babel-loader',
+      options: { presets: ['env', 'stage-1', 'react'] },
     },
     {
       test: /\.scss$/,
-      loaders: ['style-loader', 'css-loader', 'sass-loader'],
+      use:  [ 'style-loader', 'css-loader', 'sass-loader' ],
     },
     {
-      test:    /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
-      loader:  'file-loader',
-      options: { name: '_static/[hash].[ext]' },
+      test:    /\.svg$/,
+      include: path.resolve('./icons'),
+      use: [{
+        loader:  'svg-sprite-loader',
+        options: { spriteFilename: '_static/sprite.[hash].svg', esModule: false },
+      },
+      {
+        loader: 'svgo-loader',
+      }],
     }],
   },
   plugins: [
@@ -44,5 +51,6 @@ module.exports = {
     commonChunk,
     new webpack.optimize.CommonsChunkPlugin({ name: 'bundle', minChunks: Infinity }),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new SpriteLoaderPlugin(),
   ],
 };
