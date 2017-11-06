@@ -154,7 +154,7 @@ func startup() error {
 func getStaticHandler() http.Handler {
 	box, _ := rice.FindBox("dist/_static")
 	if box != nil {
-		return http.FileServer(box.HTTPBox())
+		return http.StripPrefix("/_static", http.FileServer(box.HTTPBox()))
 	}
 
 	// Proxy to the development webpack server if no box is attached
