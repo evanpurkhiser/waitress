@@ -71,6 +71,7 @@ input {
   flex-direction: row;
 
   &:before {
+    flex-shrink: 0;
     content: '';
     width: 16px;
     margin-right: 6px;
