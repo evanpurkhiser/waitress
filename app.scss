@@ -34,6 +34,15 @@ header h1 {
   flex-grow: 0;
 }
 
+header .loader {
+  border-width: 1px;
+  height: 10px;
+  width: 10px;
+  position: relative;
+  top: 5px;
+  left: 8px;
+}
+
 input {
   padding: 8px 12px;
   border-radius: 4px;
@@ -107,3 +116,16 @@ li.sh  a:before { background: url(icons/exe.svg) };
 li.gz  a:before { background: url(icons/zip.svg) };
 li.tar a:before { background: url(icons/zip.svg) };
 li.flv a:before { background: url(icons/fla.svg) };
+
+.loader {
+  border-radius: 50%;
+  border: 2px solid rgba(89, 94, 115, 0.2);
+  border-left-color: #767b92;
+  transform: translateZ(0);
+  animation: loader 500ms infinite linear;
+}
+
+@keyframes loader {
+  0%   { transform: rotate(0deg);   }
+  100% { transform: rotate(360deg); }
+}

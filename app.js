@@ -67,7 +67,7 @@ const getWindowPath = _ => decodeURIComponent(window.location.pathname)
 class FileBrowser extends Component {
   constructor() {
     super()
-    this.state = { path: getWindowPath(), tree: {} };
+    this.state = { tree: {}, loading: true, path: getWindowPath() };
 
     this.updatePath = this.updatePath.bind(this);
     this.navigateFromItem = this.navigateFromItem.bind(this);
@@ -78,7 +78,7 @@ class FileBrowser extends Component {
 
     fetch('/index.json')
       .then(r => r.json())
-      .then(j => this.setState({ tree: j }));
+      .then(j => this.setState({ tree: j, loading: false }));
   }
 
   navigateToPath(path) {
@@ -121,9 +121,14 @@ class FileBrowser extends Component {
       path={makeUrl([ ...this.state.path, k ])}
       onClick={this.navigateFromItem} />)
 
+    const treeLoading = this.state.loading
+      ? <div className="loader" />
+      : null;
+
     return <div className="browser">
       <header>
         <h1 onClick={_ => this.navigateToPath([])}>public.evanpurkhiser</h1>
+        {treeLoading}
       </header>
       <input placeholder="Search for files..." />
       <ul className="listing">
