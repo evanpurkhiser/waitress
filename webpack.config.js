@@ -4,11 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const htmlTemplate = new HtmlWebpackPlugin({
-  filename: '_static/index.html',
-  template: 'app.html',
-});
-
 const vendorChunk = new webpack.optimize.CommonsChunkPlugin({
   name: 'vendor',
   minChunks: module => /node_modules/.test(module.resource),
@@ -18,8 +13,8 @@ module.exports = {
   entry: './app.js',
   output: {
     path: path.resolve(__dirname, './dist/'),
-    filename: '_static/[name].[hash].js',
-    publicPath: '/',
+    filename: '[name].[hash].js',
+    publicPath: '/_static/',
   },
   devtool: 'source-map',
   devServer: { port: 9000, hot: true },
@@ -38,7 +33,7 @@ module.exports = {
       include: path.resolve('./icons'),
       use: [{
         loader:  'svg-sprite-loader',
-        options: { spriteFilename: '_static/sprite.[hash].svg', esModule: false },
+        options: { spriteFilename: 'sprite.[hash].svg', esModule: false },
       },
       {
         loader: 'svgo-loader',
@@ -46,13 +41,13 @@ module.exports = {
     }],
   },
   plugins: [
-    htmlTemplate,
     vendorChunk,
+    new ExtractTextPlugin({ filename: '[name].[contenthash].css' }),
+    new HtmlWebpackPlugin({ template: 'app.html' }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.CommonsChunkPlugin({ name: 'bundle', minChunks: Infinity }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new SpriteLoaderPlugin(),
-    new ExtractTextPlugin({ filename: '_static/[name].[contenthash].css' })
   ],
 };
