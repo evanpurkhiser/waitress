@@ -69,14 +69,6 @@ input {
   line-height: 1rem;
   display: flex;
   flex-direction: row;
-
-  &:before {
-    flex-shrink: 0;
-    content: '';
-    width: 16px;
-    margin-right: 6px;
-    background: url(icons/file.svg);
-  }
 }
 
 .name {
@@ -94,15 +86,24 @@ input {
   color: #888;
 }
 
+.listing li a:before {
+  flex-shrink: 0;
+  content: '';
+  width: 16px;
+  margin-right: 6px;
+  background: url(icons/file.svg);
+}
+
+// File type icons
 $file-types: ai, aif, avi, css, csv, doc, fla, html, iso, jpg, js, json, mkv, mp3,
-             mp4, pdf, png, psd, rtf, svg, txt, xls, zip, ogg, flac, wav, exe;
+             mp4, pdf, png, psd, rtf, svg, txt, xls, zip, ogg, flac, wav, exe, folder;
 
 @each $ext in $file-types {
   li.#{$ext} a:before { background: url(icons/#{$ext}.svg) };
 }
 
+// Additional file type alises
 li.sh  a:before { background: url(icons/exe.svg) };
 li.gz  a:before { background: url(icons/zip.svg) };
 li.tar a:before { background: url(icons/zip.svg) };
 li.flv a:before { background: url(icons/fla.svg) };
-li.dir a:before { background: url(icons/folder.svg); }

@@ -53,7 +53,7 @@ function ext(path) {
 const makeUrl = path => '/' + path.map(encodeURIComponent).join('/');
 
 const LineItem = p => <li
-  className={classNames({ dir: p.isDir }, ext(p.path))}>
+  className={classNames({ folder: p.isDir }, ext(p.path))}>
   <a href={p.path} data-name={p.name} onClick={p.onClick}>
     <div className="name">{p.name}</div>
     <div className="size">{prettyBytes(p.size)}</div>
