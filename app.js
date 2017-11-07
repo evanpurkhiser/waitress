@@ -55,6 +55,8 @@ class FileBrowser extends Component {
   }
 
   componentDidMount() {
+    document.title = BRANDING;
+
     window.addEventListener('popstate', this.updatePath);
 
     fetch('/index.json')
@@ -108,7 +110,7 @@ class FileBrowser extends Component {
 
     return <div className="browser">
       <header>
-        <h1 onClick={_ => this.navigateToPath([])}>public.evanpurkhiser</h1>
+        <h1 onClick={_ => this.navigateToPath([])}>{BRANDING}</h1>
         {treeLoading}
       </header>
       <ul className="listing">
