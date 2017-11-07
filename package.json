@@ -6,7 +6,6 @@
   "license": "MIT",
   "dependencies": {
     "classnames": "^2.2.5",
-    "octicons": "^7.0.1",
     "pretty-bytes": "^4.0.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
