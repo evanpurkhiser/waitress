@@ -2,30 +2,8 @@ import './app.scss'
 
 import classNames  from 'classNames';
 import prettyBytes from 'pretty-bytes';
-import Fuse        from 'fuse.js';
 import ReactDom    from 'react-dom';
 import React, { Component } from 'react';
-
-/**
- * flattenTree flattens a file tree object down into a list of file paths. Used
- * for generating the data for fuse.
- */
-function flattenTree(fileTree, path = []) {
-  let items = [];
-
-  for (const key in fileTree) {
-    const item = fileTree[key];
-    const itemPath = [ ...path, key ];
-
-    if (!item.isDir && !item.isLink) {
-      items.push(itemPath.join('/'));
-    } else {
-      items = [ ...items, ...flattenTree(item.children, itemPath) ];
-    }
-  }
-
-  return items;
-}
 
 function locatePathItem(tree, path) {
   let item = { children: tree, isDir: true };
@@ -52,6 +30,13 @@ function ext(path) {
  */
 const makeUrl = path => '/' + path.map(encodeURIComponent).join('/');
 
+/**
+ * Get the path array from the current window location
+ */
+const getWindowPath = _ => decodeURIComponent(window.location.pathname)
+  .split('/')
+  .filter(x => x);
+
 const LineItem = p => <li
   className={classNames({ folder: p.isDir }, ext(p.path))}>
   <a href={p.path} data-name={p.name} onClick={p.onClick}>
@@ -59,10 +44,6 @@ const LineItem = p => <li
     <div className="size">{prettyBytes(p.size)}</div>
   </a>
 </li>;
-
-const getWindowPath = _ => decodeURIComponent(window.location.pathname)
-  .split('/')
-  .filter(x => x);
 
 class FileBrowser extends Component {
   constructor() {
@@ -130,7 +111,6 @@ class FileBrowser extends Component {
         <h1 onClick={_ => this.navigateToPath([])}>public.evanpurkhiser</h1>
         {treeLoading}
       </header>
-      <input placeholder="Search for files..." />
       <ul className="listing">
         {listItems}
       </ul>
