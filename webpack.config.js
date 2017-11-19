@@ -14,7 +14,7 @@ const vendorChunk = new webpack.optimize.CommonsChunkPlugin({
 module.exports = {
   entry: './app.js',
   output: {
-    path: path.resolve(__dirname, './dist/'),
+    path: path.resolve(__dirname, './dist/_static'),
     filename: '[name].[hash].js',
     publicPath: '/_static/',
   },
