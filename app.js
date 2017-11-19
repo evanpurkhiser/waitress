@@ -6,7 +6,11 @@ import ReactDom    from 'react-dom';
 import React, { Component } from 'react';
 
 function locatePathItem(tree, path) {
-  let item = { children: tree, isDir: true };
+  let item = tree;
+
+  if (Object.keys(item).length === 0) {
+    return null
+  }
 
   for (const key of path) {
     item = item.children[key]

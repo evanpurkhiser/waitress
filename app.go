@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -15,13 +14,12 @@ import (
 
 	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
-	"github.com/rjeczalik/notify"
 )
 
 var root = flag.String("root", ".", "The root file path to serve files from")
 
-// FileTree represents a list of files
-type FileTree map[string]*Item
+// FileList represents a list of files
+type FileList map[string]*Item
 
 // Item represents a single file tree item
 type Item struct {
@@ -29,102 +27,14 @@ type Item struct {
 	Modified time.Time `json:"modified"`
 	IsDir    bool      `json:"isDir,omitempty"`
 	IsLink   bool      `json:"isLink,omitempty"`
-	Children *FileTree `json:"children,omitempty"`
+	Children FileList  `json:"children,omitempty"`
 	Parent   *Item     `json:"-"`
 }
 
 var (
-	tree     *FileTree
+	tree     *Item
 	treeJSON []byte
 )
-
-func buildIndex(rootPath string, parent *Item) (*FileTree, error) {
-	entries, err := ioutil.ReadDir(rootPath)
-	if err != nil {
-		return nil, err
-	}
-
-	target := make(FileTree, len(entries))
-
-	for _, entry := range entries {
-		name := entry.Name()
-
-		item := &Item{
-			IsDir:    entry.IsDir(),
-			IsLink:   entry.Mode()&os.ModeSymlink != 0,
-			Modified: entry.ModTime(),
-			Size:     entry.Size(),
-			Parent:   parent,
-		}
-
-		target[name] = item
-
-		if !item.IsDir && !item.IsLink {
-			continue
-		}
-
-		entryPath := filepath.Join(rootPath, name)
-
-		if item.IsLink {
-			entryPath, _ = filepath.EvalSymlinks(entryPath)
-
-			linkStat, err := os.Stat(entryPath)
-			if err != nil || !linkStat.IsDir() {
-				continue
-			}
-
-			item.IsDir = true
-		}
-
-		children, err := buildIndex(entryPath, item)
-		if err != nil {
-			return nil, err
-		}
-
-		target[name].Children = children
-	}
-
-	return &target, nil
-}
-
-func computeSizes(target *Item) int64 {
-	if !target.IsDir {
-		return target.Size
-	}
-
-	target.Size = 0
-
-	for _, item := range *target.Children {
-		target.Size = target.Size + computeSizes(item)
-	}
-
-	return target.Size
-}
-
-func watchDirectory(rootPath string) error {
-	events := make(chan notify.EventInfo)
-
-	watchEvents := []notify.Event{
-		notify.Create,
-		notify.Write,
-		notify.Rename,
-		notify.Remove,
-	}
-
-	// The '...' syntax is used in the notify library for recursive watching
-	path := filepath.Join(rootPath, "...")
-
-	if err := notify.Watch(path, events, watchEvents...); err != nil {
-		return err
-	}
-
-	for eventInfo := range events {
-		path := eventInfo.Path()
-		fmt.Println(path)
-	}
-
-	return nil
-}
 
 func startup() error {
 	root, _ := filepath.Abs(*root)
@@ -132,21 +42,27 @@ func startup() error {
 	fmt.Printf("Waiter now serving: %s\n", root)
 	fmt.Println(" -> Building file tree...")
 
-	tree, err := buildIndex(root, nil)
+	tree, err := buildIndex(root)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println(" -> Computing directory sizes...")
-	for _, item := range *tree {
-		item.Size = computeSizes(item)
-	}
+	computeSizes(tree)
 
 	// Cache the JSON representation of the tree
-	treeJSON, _ = json.Marshal(tree)
+	buildTreeCache := func() {
+		treeJSON, _ = json.Marshal(tree)
+	}
 
 	fmt.Println(" -> Watching for file changes...")
-	go watchDirectory(root)
+	rootWatcher := watcher{
+		root:     root,
+		tree:     tree,
+		onChange: buildTreeCache,
+	}
+	go rootWatcher.start()
+	go buildTreeCache()
 
 	return nil
 }
@@ -215,6 +131,10 @@ func main() {
 	if err := startup(); err != nil {
 		panic(err)
 	}
+
+	// TODO: File update watching
+	// TODO: Implement search client side
+	// TODO: insert 1 level of data for first load (maybe?)
 
 	r := buildRoutes()
 
