@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const branding = process.env.BRANDING || 'waitress';
 
@@ -21,26 +21,26 @@ module.exports = {
   devtool: 'source-map',
   devServer: { port: 9000, hot: true },
   module: {
-    rules: [{
-      test:    /\.js$/,
-      loader:  'babel-loader',
-      options: { presets: ['env', 'stage-1', 'react'] },
-    },
-    {
-      test: /\.scss$/,
-      use:  ExtractTextPlugin.extract([ 'css-loader', 'sass-loader' ]),
-    },
-    {
-      test:    /\.svg$/,
-      include: path.resolve('./icons'),
-      use: [{
-        loader:  'svg-sprite-loader',
-        options: { spriteFilename: 'sprite.[hash].svg', esModule: false },
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: { presets: ['env', 'stage-1', 'react'] },
       },
       {
-        loader: 'svgo-loader',
-      }],
-    }],
+        test: /\.svg$/,
+        include: path.resolve('./icons'),
+        use: [
+          {
+            loader: 'svg-sprite-loader',
+            options: { spriteFilename: 'sprite.[hash].svg', esModule: false },
+          },
+          {
+            loader: 'svgo-loader',
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     vendorChunk,
@@ -49,7 +49,10 @@ module.exports = {
     new SpriteLoaderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'bundle', minChunks: Infinity }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'bundle',
+      minChunks: Infinity,
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({ BRANDING: JSON.stringify(branding) }),
   ],

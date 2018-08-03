@@ -1,32 +1,45 @@
-import './app.scss'
-
-import classNames  from 'classNames';
 import prettyBytes from 'pretty-bytes';
-import ReactDom    from 'react-dom';
-import React, { Component } from 'react';
+import ReactDom from 'react-dom';
+import React from 'react';
+
+import { injectGlobal } from 'react-emotion';
+
+import {
+  Browser,
+  Header,
+  Listing,
+  ListingItem,
+  FileName,
+  FileSize,
+  FileIcon,
+} from './components';
+
+injectGlobal`
+  @import url('https://fonts.googleapis.com/css?family=Ubuntu:400');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    color: #595e73;
+    font-family: Ubuntu, sans-serif;
+  }
+`;
 
 function locatePathItem(tree, path) {
   let item = tree;
 
-  if (Object.keys(item).length === 0) {
-    return null
-  }
+  if (Object.keys(item).length === 0) return null;
 
   for (const key of path) {
-    item = item.children[key]
+    item = item.children[key];
 
-    if (item === undefined) {
-      return null;
-    }
+    if (item === undefined) return null;
   }
 
-  return item
-}
-
-function ext(path) {
-  const match = path.match(/.+\.(.*)$/);
-
-  return match ? match[1].toLowerCase() : '';
+  return item;
 }
 
 /**
@@ -37,63 +50,66 @@ const makeUrl = path => '/' + path.map(encodeURIComponent).join('/');
 /**
  * Get the path array from the current window location
  */
-const getWindowPath = _ => decodeURIComponent(window.location.pathname)
-  .split('/')
-  .filter(x => x);
+const getWindowPath = _ =>
+  decodeURIComponent(window.location.pathname)
+    .split('/')
+    .filter(x => x);
 
-const LineItem = p => <li
-  className={classNames({ folder: p.isDir }, ext(p.path))}>
-  <a href={p.path} data-name={p.name} onClick={p.onClick}>
-    <div className="name">{p.name}</div>
-    <div className="size">{prettyBytes(p.size)}</div>
-  </a>
-</li>;
+const File = p => (
+  <ListingItem path={p.path} onClick={p.onClick}>
+    <FileIcon path={p.path} isDir={p.isDir} />
+    <FileName>{p.name}</FileName>
+    <FileSize>{prettyBytes(p.size)}</FileSize>
+  </ListingItem>
+);
 
-class FileBrowser extends Component {
+class FileBrowser extends React.Component {
   constructor() {
-    super()
-    this.state = { tree: {}, loading: true, path: getWindowPath() };
-
-    this.updatePath = this.updatePath.bind(this);
-    this.navigateFromItem = this.navigateFromItem.bind(this);
+    super();
+    this.state = { loading: true, tree: {}, path: [], lastPath: [] };
   }
+
+  fetchOptions = {
+    headers: { Accept: 'application/json' },
+  };
 
   componentDidMount() {
-    document.title = BRANDING;
-
     window.addEventListener('popstate', this.updatePath);
+    this.updatePath();
+  }
 
-    fetch('/index.json')
+  fetchCurrent = _ =>
+    fetch(window.location.pathname, this.fetchOptions)
       .then(r => r.json())
       .then(j => this.setState({ tree: j, loading: false }));
-  }
 
-  navigateToPath(path) {
+  navigateToPath = path => {
     history.pushState(null, null, makeUrl(path));
     window.scrollTo(0, 0);
-    this.setState({ path })
-  }
 
-  navigateFromItem(e) {
-    const key  = e.target.closest('a').dataset.name;
-    const path = [ ...this.state.path, key ];
+    this.updatePath();
+  };
+
+  updatePath = _ => {
+    this.setState({ path: getWindowPath(), loading: true });
+    this.fetchCurrent();
+  };
+
+  navigateToItem = (e, target) => {
+    const path = [...this.state.path, target];
     const item = locatePathItem(this.state.tree, path) || {};
 
-    if (!item.isDir) {
-      return;
-    }
+    if (!item.isDir) return;
 
     e.preventDefault();
     this.navigateToPath(path);
-  }
+  };
 
-  updatePath() {
-    this.setState({ path: getWindowPath() });
-  }
+  navigateHome = _ => this.navigateToPath([]);
 
   render() {
     const item = locatePathItem(this.state.tree, this.state.path);
-    const fileMap = item === null ? {} : item.children;
+    const fileMap = (item && item.children) || {};
 
     const files = Object.keys(fileMap).sort((a, b) => {
       const c = item.children[a];
@@ -102,26 +118,27 @@ class FileBrowser extends Component {
       return c.isDir == d.isDir ? 0 : c.isDir ? -1 : 1;
     });
 
-    const listItems = files.map(k => <LineItem key={k}
-      { ...item.children[k] }
-      name={k}
-      path={makeUrl([ ...this.state.path, k ])}
-      onClick={this.navigateFromItem} />)
+    const listItems = files.map(k => (
+      <File
+        {...item.children[k]}
+        key={k}
+        name={k}
+        path={makeUrl([...this.state.path, k])}
+        onClick={e => this.navigateToItem(e, k)}
+      />
+    ));
 
-    const treeLoading = this.state.loading
-      ? <div className="loader" />
-      : null;
-
-    return <div className="browser">
-      <header>
-        <h1 onClick={_ => this.navigateToPath([])}>{BRANDING}</h1>
-        {treeLoading}
-      </header>
-      <ul className="listing">
-        {listItems}
-      </ul>
-    </div>;
+    return (
+      <Browser>
+        <Header
+          title="waitress"
+          isLoading={this.state.loading}
+          onClick={this.navigateHome}
+        />
+        <Listing>{listItems}</Listing>
+      </Browser>
+    );
   }
 }
 
-ReactDom.render(<FileBrowser />, document.getElementById('container'))
+ReactDom.render(<FileBrowser />, document.getElementById('container'));

@@ -9,8 +9,6 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"path/filepath"
-	"time"
 
 	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
@@ -18,53 +16,15 @@ import (
 
 var root = flag.String("root", ".", "The root file path to serve files from")
 
-// FileList represents a list of files
-type FileList map[string]*Item
-
-// Item represents a single file tree item
-type Item struct {
-	Size     int64     `json:"size"`
-	Modified time.Time `json:"modified"`
-	IsDir    bool      `json:"isDir,omitempty"`
-	IsLink   bool      `json:"isLink,omitempty"`
-	Children FileList  `json:"children,omitempty"`
-	Parent   *Item     `json:"-"`
-}
-
-var (
-	tree     *Item
-	treeJSON []byte
-)
-
-func startup() error {
-	root, _ := filepath.Abs(*root)
-
-	fmt.Printf("Waiter now serving: %s\n", root)
-	fmt.Println(" -> Building file tree...")
-
-	tree, err := buildIndex(root)
+func handleServeTree(w http.ResponseWriter, req *http.Request) {
+	tree, err := BuildTree(*root, req.URL.Path)
 	if err != nil {
-		return err
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
-	fmt.Println(" -> Computing directory sizes...")
-	computeSizes(tree)
-
-	// Cache the JSON representation of the tree
-	buildTreeCache := func() {
-		treeJSON, _ = json.Marshal(tree)
-	}
-
-	fmt.Println(" -> Watching for file changes...")
-	rootWatcher := watcher{
-		root:     root,
-		tree:     tree,
-		onChange: buildTreeCache,
-	}
-	go rootWatcher.start()
-	go buildTreeCache()
-
-	return nil
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(tree)
 }
 
 func getStaticHandler() http.Handler {
@@ -101,9 +61,8 @@ func handleServeFile(w http.ResponseWriter, r *http.Request) bool {
 func buildRoutes() *mux.Router {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/index.json", func(w http.ResponseWriter, req *http.Request) {
-		w.Write(treeJSON)
-	})
+	// Anything requested as JSON is assumed to be requesting the tree
+	r.NewRoute().Headers("Accept", "application/json").HandlerFunc(handleServeTree)
 
 	staticHandler := getStaticHandler()
 
@@ -127,14 +86,6 @@ func buildRoutes() *mux.Router {
 
 func main() {
 	flag.Parse()
-
-	if err := startup(); err != nil {
-		panic(err)
-	}
-
-	// TODO: File update watching
-	// TODO: Implement search client side
-	// TODO: insert 1 level of data for first load (maybe?)
 
 	r := buildRoutes()
 
