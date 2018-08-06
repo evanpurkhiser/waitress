@@ -9,6 +9,7 @@ const FileName = styled('div')`
 `;
 
 const FileSize = styled('div')`
+  flex-shrink: 0;
   margin-left: 5px;
   font-size: 0.6rem;
   color: #888;

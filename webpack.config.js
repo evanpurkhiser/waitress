@@ -2,14 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-const branding = process.env.BRANDING || 'waitress';
-
-const vendorChunk = new webpack.optimize.CommonsChunkPlugin({
-  name: 'vendor',
-  minChunks: module => /node_modules/.test(module.resource),
-});
 
 module.exports = {
   entry: './app.js',
@@ -18,8 +10,12 @@ module.exports = {
     filename: '[name].[hash].js',
     publicPath: '/_static/',
   },
-  devtool: 'source-map',
+  devtool: 'cheap-module-eval-source-map',
   devServer: { port: 9000, hot: true },
+  optimization: {
+    splitChunks: { chunks: 'all' },
+  },
+
   module: {
     rules: [
       {
@@ -43,17 +39,8 @@ module.exports = {
     ],
   },
   plugins: [
-    vendorChunk,
-    new ExtractTextPlugin({ filename: '[name].[contenthash].css' }),
     new HtmlWebpackPlugin({ template: 'app.html' }),
     new SpriteLoaderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'bundle',
-      minChunks: Infinity,
-    }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.DefinePlugin({ BRANDING: JSON.stringify(branding) }),
   ],
 };

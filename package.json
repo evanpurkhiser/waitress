@@ -5,9 +5,8 @@
   "author": "Evan Purkhiser",
   "license": "MIT",
   "dependencies": {
-    "classnames": "^2.2.5",
     "emotion": "^9.2.6",
-    "pretty-bytes": "^4.0.2",
+    "pretty-bytes": "^5.1.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-emotion": "^9.2.6"
@@ -18,18 +17,18 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-1": "^6.24.1",
-    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^2.28.0",
+    "html-webpack-plugin": "^3.2.0",
     "static-site-generator-webpack-plugin": "^3.1.0",
     "svg-sprite-loader": "^3.4.1",
     "svgo": "^1.0.2",
     "svgo-loader": "^2.0.0",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   },
   "scripts": {
-    "build": "webpack -p",
-    "server": "webpack-dev-server --watch"
+    "build": "webpack --mode=production",
+    "server": "webpack-dev-server --watch --hot --mode=development"
   }
 }

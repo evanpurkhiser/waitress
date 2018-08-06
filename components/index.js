@@ -1,4 +1,4 @@
-import Browser from './browser';
+import FileBrowser from './fileBrowser';
 import Header from './header';
 import FileIcon from './fileIcon';
 import LoadingSpinner from './loadingSpinner';
@@ -6,7 +6,7 @@ import { Listing, ListingItem } from './listing';
 import { FileName, FileSize } from './attributes';
 
 export {
-  Browser,
+  FileBrowser,
   Header,
   Listing,
   ListingItem,
