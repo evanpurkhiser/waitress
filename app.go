@@ -16,6 +16,7 @@ import (
 )
 
 var root = flag.String("root", ".", "The root file path to serve files from")
+var port = flag.Int("port", 8000, "The port to run the server on")
 
 func handleServeTree(w http.ResponseWriter, req *http.Request) {
 	tree, err := BuildTree(*root, req.URL.Path)
@@ -101,6 +102,11 @@ func main() {
 
 	r := buildRoutes()
 
-	fmt.Println(" -> Serving files on port 8000")
-	http.ListenAndServe(":8000", r)
+	serverPort := fmt.Sprintf(":%d", *port)
+	fmt.Printf("Serving up files on port %d\n", *port)
+
+	if err := http.ListenAndServe(serverPort, r); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		return
+	}
 }
