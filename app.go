@@ -11,6 +11,7 @@ import (
 	"path"
 
 	"github.com/GeertJohan/go.rice"
+	"github.com/getsentry/raven-go"
 	"github.com/gorilla/mux"
 )
 
@@ -18,9 +19,13 @@ var root = flag.String("root", ".", "The root file path to serve files from")
 
 func handleServeTree(w http.ResponseWriter, req *http.Request) {
 	tree, err := BuildTree(*root, req.URL.Path)
-	if err != nil {
+	if err != nil && os.IsNotExist(err) {
 		w.WriteHeader(http.StatusNotFound)
 		return
+	}
+
+	if err != nil {
+		panic(err)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -61,30 +66,37 @@ func handleServeFile(w http.ResponseWriter, r *http.Request) bool {
 func buildRoutes() *mux.Router {
 	r := mux.NewRouter()
 
-	// Anything requested as JSON is assumed to be requesting the tree
-	r.NewRoute().Headers("Accept", "application/json").HandlerFunc(handleServeTree)
-
 	staticHandler := getStaticHandler()
+	treeHandler := handleServeTree
+	fileHandler := func(w http.ResponseWriter, r *http.Request) {
+		if !handleServeFile(w, r) {
+			r.URL.Path = "/_static/"
+			staticHandler.ServeHTTP(w, r)
+		}
+	}
+
+	treeHandler = raven.RecoveryHandler(treeHandler)
+	fileHandler = raven.RecoveryHandler(fileHandler)
 
 	// Specific pattern match to allow for development webpack hot update json
 	// and js files served from the webpack dev server.
 	r.Handle("/{name:[0-9a-f.]+\\.hot-update\\.js(?:on)?}", staticHandler)
 
+	// Anything requested as JSON is assumed to be requesting the tree
+	r.NewRoute().Headers("Accept", "application/json").HandlerFunc(handleServeTree)
+
 	// Serve static assets
 	r.PathPrefix("/_static").Handler(staticHandler)
 
 	// Serve file content
-	r.NewRoute().HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !handleServeFile(w, r) {
-			r.URL.Path = "/_static/"
-			staticHandler.ServeHTTP(w, r)
-		}
-	})
+	r.NewRoute().HandlerFunc(fileHandler)
 
 	return r
 }
 
 func main() {
+	raven.SetDSN("https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756")
+
 	flag.Parse()
 
 	r := buildRoutes()
