@@ -7,6 +7,7 @@
   "dependencies": {
     "emotion": "^9.2.6",
     "pretty-bytes": "^5.1.0",
+    "prop-types": "^15.6.2",
     "raven-js": "^3.26.4",
     "react": "^16.0.0",
     "react-document-title": "^2.0.3",
