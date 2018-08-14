@@ -1,3 +1,4 @@
+import DocumentTitle from 'react-document-title';
 import React from 'react';
 import prettyBytes from 'pretty-bytes';
 import styled from 'react-emotion';
@@ -123,13 +124,17 @@ export default class FileBrowser extends React.Component {
       />
     ));
 
+    const title = window.location.hostname;
+    const pageTitle = this.state.path.slice(-1)[0] || title;
+
     return (
       <Browser>
         <Header
-          title="waitress"
+          title={title}
           isLoading={this.state.loading}
           onClick={this.navigateHome}
         />
+        <DocumentTitle title={pageTitle} />
         <Listing disabled={targetItem.shallow}>{listItems}</Listing>
       </Browser>
     );

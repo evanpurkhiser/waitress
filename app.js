@@ -1,6 +1,6 @@
-import ReactDom from 'react-dom';
-import React from 'react';
 import Raven from 'raven-js';
+import React from 'react';
+import ReactDom from 'react-dom';
 import { injectGlobal } from 'react-emotion';
 
 import FileBrowser from './components/fileBrowser';

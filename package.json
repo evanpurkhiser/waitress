@@ -9,6 +9,7 @@
     "pretty-bytes": "^5.1.0",
     "raven-js": "^3.26.4",
     "react": "^16.0.0",
+    "react-document-title": "^2.0.3",
     "react-dom": "^16.0.0",
     "react-emotion": "^9.2.6"
   },
