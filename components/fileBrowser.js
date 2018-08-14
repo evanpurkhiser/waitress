@@ -71,9 +71,7 @@ export default class FileBrowser extends React.Component {
     const path = [...this.state.path, target];
     const item = locate(this.state.tree, path, {});
 
-    console.log(this.state.tree);
-
-    if (!item.isDir) return;
+    if (!item.hasOwnProperty('isDir')) return;
 
     e.preventDefault();
     this.navigateToPath(path);
@@ -83,7 +81,7 @@ export default class FileBrowser extends React.Component {
     fetch(makeUrl(this.state.path), this.fetchOptions)
       .then(r => r.json())
       .then(j => this.setState({ tree: j, loading: false }))
-      .catch(_ => this.setState({ loading: false }));
+      .catch(e => null);
 
   updatePath = _ => {
     const lastPath = this.state.path;
