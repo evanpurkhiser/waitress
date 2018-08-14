@@ -95,9 +95,18 @@ func buildRoutes() *mux.Router {
 	return r
 }
 
-func main() {
+func setupRaven() {
 	raven.SetDSN("https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756")
 
+	if _, err := rice.FindBox("dist/_static"); err != nil {
+		raven.SetEnvironment("development")
+	} else {
+		raven.SetEnvironment("production")
+	}
+}
+
+func main() {
+	setupRaven()
 	flag.Parse()
 
 	r := buildRoutes()
