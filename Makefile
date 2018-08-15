@@ -6,7 +6,6 @@ build: clean deps
 	rice append --import-path=go.evanpurkhiser.com/waitress --exec=dist/waitress
 
 deps:
-	go get github.com/GeertJohan/go.rice
 	go get github.com/GeertJohan/go.rice/rice
 	yarn install
 	dep ensure
