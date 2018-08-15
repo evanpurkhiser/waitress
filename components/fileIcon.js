@@ -25,7 +25,7 @@ const FileIcon = styled(p => {
 
   return (
     <svg className={p.className} viewBox={viewBox} width={16} height={16}>
-      <use href={`#${id}`} />
+      <use href={`#${id}`} xlinkHref={`#${id}`} />
     </svg>
   );
 })`
