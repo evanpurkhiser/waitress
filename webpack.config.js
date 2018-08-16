@@ -3,6 +3,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
+const IS_PROD =
+  process.argv.find(a => a.includes('mode=production')) !== undefined;
+
 module.exports = {
   entry: './app.js',
   output: {
@@ -10,7 +13,7 @@ module.exports = {
     filename: '[name].[hash].js',
     publicPath: '/_static/',
   },
-  devtool: 'cheap-module-eval-source-map',
+  devtool: IS_PROD ? 'source-map' : 'cheap-module-eval-source-map',
   devServer: { port: 9000, hot: true },
   optimization: {
     splitChunks: { chunks: 'all' },
