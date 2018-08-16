@@ -29,6 +29,7 @@ const FileIcon = styled(p => {
     </svg>
   );
 })`
+  flex-shrink: 0;
   margin-right: 6px;
 `;
 
