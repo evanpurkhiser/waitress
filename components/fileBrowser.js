@@ -40,14 +40,16 @@ export default class FileBrowser extends React.Component {
     lastPath: [],
   };
 
-  fetchOptions = {
-    headers: { Accept: 'application/json' },
-  };
+  fetchOptions = {};
 
   componentDidMount() {
     window.addEventListener('popstate', this.updatePath);
     this.updatePath();
     this.cancelPending();
+  }
+
+  get fetchUrl() {
+    return '/_tree' + makeUrl(this.state.path);
   }
 
   cancelPending() {
@@ -79,7 +81,7 @@ export default class FileBrowser extends React.Component {
   }
 
   fetchCurrent = _ =>
-    fetch(makeUrl(this.state.path), this.fetchOptions)
+    fetch(this.fetchUrl, this.fetchOptions)
       .then(r => r.json())
       .then(j => this.setState({ tree: j, loading: false }))
       .catch(e => null);

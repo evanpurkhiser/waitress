@@ -83,8 +83,10 @@ func buildRoutes() *mux.Router {
 	// and js files served from the webpack dev server.
 	r.Handle("/{name:[0-9a-f.]+\\.hot-update\\.js(?:on)?}", staticHandler)
 
-	// Anything requested as JSON is assumed to be requesting the tree
-	r.NewRoute().Headers("Accept", "application/json").HandlerFunc(handleServeTree)
+	// Serve tree json
+	r.PathPrefix("/_tree").Handler(
+		http.StripPrefix("/_tree", http.HandlerFunc(treeHandler)),
+	)
 
 	// Serve static assets
 	r.PathPrefix("/_static").Handler(staticHandler)
