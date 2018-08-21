@@ -107,13 +107,12 @@ export default class FileBrowser extends React.Component {
   navigateHome = _ => this.navigateToPath([]);
 
   render() {
-    const targetItem = locate(this.state.tree, this.state.path, {});
+    const { loading, tree, path, lastPath } = this.state;
 
     // If our targetItem is shallow render our lastpath until our tree has been
     // updated with the loaded path.
-    const item = targetItem.shallow
-      ? locate(this.state.tree, this.state.lastPath, {})
-      : targetItem;
+    const targetItem = locate(tree, path, {});
+    const item = targetItem.shallow ? locate(tree, lastPath, {}) : targetItem;
 
     const fileMap = item.children || {};
 
@@ -129,20 +128,20 @@ export default class FileBrowser extends React.Component {
         {...item.children[k]}
         key={k}
         name={k}
-        path={makeUrl([...this.state.path, k])}
+        path={makeUrl([...path, k])}
         onClick={e => this.navigateToItem(e, k)}
       />
     ));
 
     const title = window.location.hostname;
-    const pageTitle = this.state.path.slice(-1)[0] || title;
+    const pageTitle = path.slice(-1)[0] || title;
 
     return (
       <Browser>
         <Header
           title={title}
-          isLoading={this.state.loading}
           onClick={this.navigateHome}
+          isLoading={targetItem.shallow && loading}
         />
         <DocumentTitle title={pageTitle} />
         <Listing disabled={targetItem.shallow}>{listItems}</Listing>
