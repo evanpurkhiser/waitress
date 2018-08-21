@@ -11,13 +11,24 @@ const LoadingSpinner = styled('div')`
     }
   }
 
+  @keyframes delayedShow {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  animation: loader 500ms infinite linear, delayedShow 500ms 200ms forwards;
+
   height: ${p => p.size}px;
   width: ${p => p.size}px;
   border-radius: 50%;
   border: 2px solid rgba(89, 94, 115, 0.2);
   border-left-color: #767b92;
   transform: translateZ(0);
-  animation: loader 500ms infinite linear;
+  opacity: 0;
 `;
 
 export default LoadingSpinner;
