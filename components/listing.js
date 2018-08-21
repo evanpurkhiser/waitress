@@ -18,6 +18,20 @@ const Listing = styled('ul')`
   ${getDisabled};
 `;
 
+const EmptyListing = styled(p => (
+  <div className={p.className}>Nothing in {p.folder}</div>
+))`
+  flex-grow: 1;
+  display: flex;
+  height: 120px;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  border-radius: 12px;
+  border: 2px dashed #eee;
+  margin: -10px 0 10px;
+`;
+
 const ListingItem = styled(p => (
   <li className={p.className}>
     <a href={p.path} onClick={p.onClick}>
@@ -42,4 +56,4 @@ const ListingItem = styled(p => (
     color: #595e73;
   }
 `;
-export { Listing, ListingItem };
+export { Listing, ListingItem, EmptyListing };

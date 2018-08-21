@@ -3,7 +3,15 @@ import React from 'react';
 import prettyBytes from 'pretty-bytes';
 import styled from 'react-emotion';
 
-import { Header, Listing, ListingItem, FileName, FileSize, FileIcon } from '.';
+import {
+  Header,
+  Listing,
+  ListingItem,
+  EmptyListing,
+  FileName,
+  FileSize,
+  FileIcon,
+} from '.';
 
 /**
  * Transform a path list to a URL
@@ -138,6 +146,7 @@ export default class FileBrowser extends React.Component {
         />
         <DocumentTitle title={pageTitle} />
         <Listing disabled={targetItem.shallow}>{listItems}</Listing>
+        {listItems.length === 0 && <EmptyListing folder={pageTitle} />}
       </Browser>
     );
   }

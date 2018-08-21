@@ -2,7 +2,7 @@ import FileBrowser from './fileBrowser';
 import Header from './header';
 import FileIcon from './fileIcon';
 import LoadingSpinner from './loadingSpinner';
-import { Listing, ListingItem } from './listing';
+import { Listing, ListingItem, EmptyListing } from './listing';
 import { FileName, FileSize } from './attributes';
 
 export {
@@ -10,6 +10,7 @@ export {
   Header,
   Listing,
   ListingItem,
+  EmptyListing,
   FileName,
   FileSize,
   FileIcon,
