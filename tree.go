@@ -82,6 +82,32 @@ func BuildTree(rootPath, path string) (*File, error) {
 	return rootFile, nil
 }
 
+// BuildTreeSizes recursively computes directory sizes for a given directories
+// containing directories.
+func BuildTreeSizes(root string, path string) (map[string]int64, error) {
+	fullPath := filepath.Join(root, filepath.Clean(separator+path))
+
+	entries, err := ioutil.ReadDir(fullPath)
+	if err != nil {
+		return nil, err
+	}
+
+	mapping := map[string]int64{}
+
+	for _, file := range entries {
+		if !file.IsDir() {
+			continue
+		}
+
+		name := file.Name()
+		filePath := filepath.Join(fullPath, name)
+
+		mapping[name] = computeSize(filePath)
+	}
+
+	return mapping, nil
+}
+
 func constructFile(path string, entry os.FileInfo, targetDepth int) (*File, error) {
 	var err error
 
@@ -139,17 +165,13 @@ func constructFile(path string, entry os.FileInfo, targetDepth int) (*File, erro
 	return item, nil
 }
 
-func computeSizes(target *File) int64 {
-	if !target.IsDir {
-		return target.Size
-	}
+func computeSize(root string) int64 {
+	var size int64
 
-	target.Size = 0
+	filepath.Walk(root, func(_ string, info os.FileInfo, err error) error {
+		size = size + info.Size()
+		return nil
+	})
 
-	// TODO: We can probably parallelize this
-	for _, item := range target.Children {
-		target.Size = target.Size + computeSizes(item)
-	}
-
-	return target.Size
+	return size
 }
