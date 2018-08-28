@@ -42,6 +42,7 @@ const File = p => (
 
 export default class FileBrowser extends React.Component {
   state = {
+    firstLoad: false,
     loading: false,
     tree: {},
     path: [],
@@ -91,7 +92,7 @@ export default class FileBrowser extends React.Component {
   fetchCurrent = _ =>
     fetch(this.fetchUrl, this.fetchOptions)
       .then(r => r.json())
-      .then(j => this.setState({ tree: j, loading: false }))
+      .then(j => this.setState({ tree: j, loading: false, firstLoad: true }))
       .catch(e => null);
 
   updatePath = _ => {
@@ -107,7 +108,7 @@ export default class FileBrowser extends React.Component {
   navigateHome = _ => this.navigateToPath([]);
 
   render() {
-    const { loading, tree, path, lastPath } = this.state;
+    const { loading, tree, path, lastPath, firstLoad } = this.state;
 
     // If our targetItem is shallow render our lastpath until our tree has been
     // updated with the loaded path.
@@ -145,7 +146,8 @@ export default class FileBrowser extends React.Component {
         />
         <DocumentTitle title={pageTitle} />
         <Listing disabled={targetItem.shallow}>{listItems}</Listing>
-        {listItems.length === 0 && <EmptyListing folder={pageTitle} />}
+        {firstLoad &&
+          listItems.length === 0 && <EmptyListing folder={pageTitle} />}
       </Browser>
     );
   }
