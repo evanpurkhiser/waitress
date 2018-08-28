@@ -67,7 +67,7 @@ module.exports = {
     new SpriteLoaderPlugin(),
     new FaviconsWebpackPlugin({
       logo: './icons/folder.svg',
-      icons: enabledFavicons
+      icons: enabledFavicons,
       prefix: 'favicons-[hash]/',
     }),
     new webpack.HotModuleReplacementPlugin(),
