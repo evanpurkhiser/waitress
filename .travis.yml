@@ -1,0 +1,8 @@
+language: go
+
+before_install:
+- sudo apt-get update -qq
+- sudo apt-get install -qq yarn
+- curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+script: make
