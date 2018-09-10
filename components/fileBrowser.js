@@ -121,7 +121,11 @@ export default class FileBrowser extends React.Component {
       const c = item.children[a];
       const d = item.children[b];
 
-      return c.isDir == d.isDir ? 0 : c.isDir ? -1 : 1;
+      const dirSort = d.isDir ? 1 : -1;
+
+      return c.isDir === d.isDir
+        ? a.localeCompare(b, undefined, { numeric: true })
+        : dirSort;
     });
 
     const listItems = files.map(k => (
