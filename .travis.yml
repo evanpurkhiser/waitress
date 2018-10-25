@@ -1,11 +1,4 @@
 language: go
-go_import_path: go.evanpurkhiser.com/waitress
+go: [ 1.11.x ]
 
-before_install:
-- sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
-- echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-- sudo apt-get update -qq
-- sudo apt-get install -y -qq yarn
-- curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
-script: make
+script: GO111MODULE=on make
