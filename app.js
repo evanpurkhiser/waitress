@@ -1,14 +1,14 @@
-import Raven from 'raven-js';
+import { injectGlobal } from 'emotion';
+import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDom from 'react-dom';
-import { injectGlobal } from 'react-emotion';
 
 import FileBrowser from './components/fileBrowser';
 
-const environment = process.env.NODE_ENV;
-
-const ravenKey = 'https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756';
-Raven.config(ravenKey, { environment }).install();
+Sentry.init({
+  dsn: 'https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756',
+  environment: process.env.NODE_ENV,
+});
 
 injectGlobal`
   * {
