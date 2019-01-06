@@ -1,4 +1,4 @@
-import { injectGlobal } from 'emotion';
+import { Global, css } from '@emotion/core';
 import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -10,7 +10,7 @@ Sentry.init({
   environment: process.env.NODE_ENV,
 });
 
-injectGlobal`
+const globalStlyes = css`
   * {
     box-sizing: border-box;
   }
@@ -22,4 +22,10 @@ injectGlobal`
   }
 `;
 
-ReactDom.render(<FileBrowser />, document.getElementById('container'));
+const app = (
+  <Global styles={globalStyles}>
+    <FileBrowser />
+  </Global>
+);
+
+ReactDom.render(app, document.getElementById('container'));

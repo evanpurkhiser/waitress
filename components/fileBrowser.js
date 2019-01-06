@@ -1,7 +1,7 @@
 import DocumentTitle from 'react-document-title';
 import React from 'react';
 import prettyBytes from 'pretty-bytes';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import {
   Header,

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 // Alias file types to other icons
 const FILETYPE_ALIASES = {
