@@ -10,7 +10,13 @@ Waitress is a small server that quickly serves up your files with style.
 
 ```
 $ make
-$ dist/waitress -root /mnt/my-files
+$ dist/waitress -root $PWD
+```
+
+You can also quickly run it using docker
+
+```
+docker run -p 8000:80 -v $PWD:/data evanpurkhiser/waitress
 ```
 
 #### Upcoming features
