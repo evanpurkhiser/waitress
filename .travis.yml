@@ -1,7 +1,2 @@
-language: go
-go: [ 1.11.x ]
-
-env:
-  - GO111MODULE=on
-
-script: make
+services: [ docker ]
+script: docker build .
