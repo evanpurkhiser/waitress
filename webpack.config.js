@@ -1,10 +1,11 @@
+/* eslint-env node */
+
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
-const IS_PROD =
-  process.argv.find(a => a.includes('mode=production')) !== undefined;
+const IS_PROD = process.argv.find(a => a.includes('mode=production'));
 
 module.exports = {
   entry: './app.js',

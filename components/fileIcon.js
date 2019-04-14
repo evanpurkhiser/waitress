@@ -10,12 +10,13 @@ const FILETYPE_ALIASES = {
 };
 
 // Create svg file icon require context
+// eslint-disable-next-line no-undef
 const fileIcons = require.context('../icons', true, /.*\.svg/);
 const fileTypes = fileIcons.keys().map(t => t.slice(2, -4));
 
 const FileIcon = styled(p => {
   let type = !p.isDir
-    ? (p.path.match(/.+\.(.*)$/) || [, ''])[1].toLowerCase()
+    ? (p.path.match(/.+\.(.*)$/) || [null, ''])[1].toLowerCase()
     : 'folder';
 
   type = FILETYPE_ALIASES[type] || type;

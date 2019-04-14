@@ -16,14 +16,14 @@ import {
 /**
  * Transform a path list to a URL
  */
-const makeUrl = path => '/' + path.map(encodeURIComponent).join('/');
+const makeUrl = path => `/${path.map(encodeURIComponent).join('/')}`;
 
 /**
  * Locate the path within an object.
  */
 function locate(object, path, defaultValue) {
   let index = 0;
-  const length = path.length;
+  const { length } = path;
 
   while (object && object.children && index < length) {
     object = object.children[path[index++]];
@@ -58,11 +58,11 @@ export default class FileBrowser extends React.Component {
   }
 
   get fetchUrl() {
-    return '/_tree' + makeUrl(this.state.path);
+    return `/_tree${makeUrl(this.state.path)}`;
   }
 
   cancelPending() {
-    if (this.fetchAborter != undefined) {
+    if (this.fetchAborter) {
       this.fetchAborter.abort();
     }
 
@@ -83,7 +83,9 @@ export default class FileBrowser extends React.Component {
     const path = [...this.state.path, target];
     const item = locate(this.state.tree, path, {});
 
-    if (!item.hasOwnProperty('isDir')) return;
+    if (!item.hasOwnProperty('isDir')) {
+      return;
+    }
 
     e.preventDefault();
     this.navigateToPath(path);
@@ -93,16 +95,18 @@ export default class FileBrowser extends React.Component {
     fetch(this.fetchUrl, this.fetchOptions)
       .then(r => r.json())
       .then(j => this.setState({ tree: j, loading: false, firstLoad: true }))
-      .catch(e => null);
+      .catch(_ => null);
 
   updatePath = _ => {
-    const lastPath = this.state.path;
     const path = decodeURIComponent(window.location.pathname)
       .split('/')
       .filter(x => x);
 
     this.cancelPending();
-    this.setState({ path, lastPath, loading: true }, _ => this.fetchCurrent());
+    this.setState(
+      ({ lastPath }) => ({ path, lastPath, loading: true }),
+      _ => this.fetchCurrent()
+    );
   };
 
   navigateHome = _ => this.navigateToPath([]);
@@ -124,7 +128,7 @@ export default class FileBrowser extends React.Component {
       const dirSort = d.isDir ? 1 : -1;
 
       return c.isDir === d.isDir
-        ? a.localeCompare(b, undefined, { numeric: true })
+        ? a.localeCompare(b, null, { numeric: true })
         : dirSort;
     });
 
@@ -150,8 +154,9 @@ export default class FileBrowser extends React.Component {
         />
         <DocumentTitle title={pageTitle} />
         <Listing disabled={targetItem.shallow}>{listItems}</Listing>
-        {firstLoad &&
-          listItems.length === 0 && <EmptyListing folder={pageTitle} />}
+        {firstLoad && listItems.length === 0 && (
+          <EmptyListing folder={pageTitle} />
+        )}
       </Browser>
     );
   }
