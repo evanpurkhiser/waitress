@@ -23,9 +23,10 @@ const globalStyles = css`
 `;
 
 const app = (
-  <Global styles={globalStyles}>
+  <React.Fragment>
+    <Global styles={globalStyles} />
     <FileBrowser />
-  </Global>
+  </React.Fragment>
 );
 
 ReactDom.render(app, document.getElementById('container'));

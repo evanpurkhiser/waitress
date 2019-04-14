@@ -128,7 +128,7 @@ export default class FileBrowser extends React.Component {
       const dirSort = d.isDir ? 1 : -1;
 
       return c.isDir === d.isDir
-        ? a.localeCompare(b, null, { numeric: true })
+        ? a.localeCompare(b, {}, { numeric: true })
         : dirSort;
     });
 
