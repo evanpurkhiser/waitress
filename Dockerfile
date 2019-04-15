@@ -8,4 +8,5 @@ FROM alpine:3.9
 COPY --from=builder dist/waitress .
 
 EXPOSE 80
+VOLUME /data
 CMD ["./waitress", "-root", "/data", "-port", "80"]
