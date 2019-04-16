@@ -114,7 +114,7 @@ func main() {
 	r := buildRoutes()
 
 	serverPort := fmt.Sprintf(":%d", *port)
-	fmt.Printf("Serving up files on port %d\n", *port)
+	fmt.Printf("Serving up %s on port %d\n", *root, *port)
 
 	if err := http.ListenAndServe(serverPort, r); err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s\n", err)
