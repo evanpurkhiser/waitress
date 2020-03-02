@@ -1,6 +1,6 @@
 ### Your files – served
 
-[![Build Status](https://www.travis-ci.com/EvanPurkhiser/waitress.svg?branch=master)](https://www.travis-ci.com/EvanPurkhiser/waitress)
+[![Build Status](https://github.com/evanpurkhiser/waitress/workflows/build/badge.svg)](https://github.com/EvanPurkhiser/waitress/actions?query=workflow%3Abuild)
 
 Waitress is a small server that quickly serves up your files with style.
 

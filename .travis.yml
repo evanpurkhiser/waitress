@@ -1,2 +1,0 @@
-services: [ docker ]
-script: docker build .
