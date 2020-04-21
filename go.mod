@@ -1,5 +1,7 @@
 module go.evanpurkhiser.com/waitress
 
+go 1.14
+
 require (
 	github.com/GeertJohan/go.incremental v0.0.0-20161212213043-1172aab96510 // indirect
 	github.com/GeertJohan/go.rice v0.0.0-20170420135705-c02ca9a983da
