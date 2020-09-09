@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: docker build --tag=evanpurkhiser/waitress:latest .
-    - name: Publish
-      run: |
-        docker login --username=evanpurkhiser --password-stdin <<< "${{ secrets.DOCKER_HUB_TOKEN }}"
-        docker push evanpurkhiser/waitress:latest
+      - uses: actions/checkout@v2
+      - name: Build
+        run: docker build --tag=evanpurkhiser/waitress:latest .
+      - name: Publish
+        run: |
+          docker login --username=evanpurkhiser --password-stdin <<< "${{ secrets.DOCKER_HUB_TOKEN }}"
+          docker push evanpurkhiser/waitress:latest

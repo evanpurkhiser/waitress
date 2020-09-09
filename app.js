@@ -1,4 +1,4 @@
-import { Global, css } from '@emotion/core';
+import {Global, css} from '@emotion/core';
 import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDom from 'react-dom';

@@ -23,7 +23,7 @@ const makeUrl = path => `/${path.map(encodeURIComponent).join('/')}`;
  */
 function locate(object, path, defaultValue) {
   let index = 0;
-  const { length } = path;
+  const {length} = path;
 
   while (object && object.children && index < length) {
     object = object.children[path[index++]];
@@ -94,7 +94,7 @@ export default class FileBrowser extends React.Component {
   fetchCurrent = _ =>
     fetch(this.fetchUrl, this.fetchOptions)
       .then(r => r.json())
-      .then(j => this.setState({ tree: j, loading: false, firstLoad: true }))
+      .then(j => this.setState({tree: j, loading: false, firstLoad: true}))
       .catch(_ => null);
 
   updatePath = _ => {
@@ -104,7 +104,7 @@ export default class FileBrowser extends React.Component {
 
     this.cancelPending();
     this.setState(
-      ({ lastPath }) => ({ path, lastPath, loading: true }),
+      ({lastPath}) => ({path, lastPath, loading: true}),
       _ => this.fetchCurrent()
     );
   };
@@ -112,7 +112,7 @@ export default class FileBrowser extends React.Component {
   navigateHome = _ => this.navigateToPath([]);
 
   render() {
-    const { loading, tree, path, lastPath, firstLoad } = this.state;
+    const {loading, tree, path, lastPath, firstLoad} = this.state;
 
     // If our targetItem is shallow render our lastpath until our tree has been
     // updated with the loaded path.
@@ -127,9 +127,7 @@ export default class FileBrowser extends React.Component {
 
       const dirSort = d.isDir ? 1 : -1;
 
-      return c.isDir === d.isDir
-        ? a.localeCompare(b, {}, { numeric: true })
-        : dirSort;
+      return c.isDir === d.isDir ? a.localeCompare(b, {}, {numeric: true}) : dirSort;
     });
 
     const listItems = files.map(k => (
@@ -154,9 +152,7 @@ export default class FileBrowser extends React.Component {
         />
         <DocumentTitle title={pageTitle} />
         <Listing disabled={targetItem.shallow}>{listItems}</Listing>
-        {firstLoad && listItems.length === 0 && (
-          <EmptyListing folder={pageTitle} />
-        )}
+        {firstLoad && listItems.length === 0 && <EmptyListing folder={pageTitle} />}
       </Browser>
     );
   }

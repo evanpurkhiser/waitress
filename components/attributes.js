@@ -14,4 +14,4 @@ const FileSize = styled('div')`
   color: #888;
 `;
 
-export { FileName, FileSize };
+export {FileName, FileSize};

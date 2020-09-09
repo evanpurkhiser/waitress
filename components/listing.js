@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import {css} from '@emotion/core';
 
 const getDisabled = p =>
   p.disabled &&
@@ -57,4 +57,4 @@ const ListingItem = styled(p => (
     color: #595e73;
   }
 `;
-export { Listing, ListingItem, EmptyListing };
+export {Listing, ListingItem, EmptyListing};
