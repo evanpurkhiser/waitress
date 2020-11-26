@@ -1,16 +1,16 @@
-import DocumentTitle from 'react-document-title';
 import React from 'react';
-import prettyBytes from 'pretty-bytes';
+import DocumentTitle from 'react-document-title';
 import styled from '@emotion/styled';
+import prettyBytes from 'pretty-bytes';
 
 import {
+  EmptyListing,
+  FileIcon,
+  FileName,
+  FileSize,
   Header,
   Listing,
   ListingItem,
-  EmptyListing,
-  FileName,
-  FileSize,
-  FileIcon,
 } from '.';
 
 /**

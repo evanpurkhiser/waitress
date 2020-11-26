@@ -29,7 +29,7 @@
     "webpack-cli": "^3.1.0"
   },
   "devDependencies": {
-    "@evanpurkhiser/eslint-config": "^0.8.2",
+    "@evanpurkhiser/eslint-config": "^0.9.1",
     "eslint": "^7.8.1",
     "prettier": "^2.1.1",
     "webpack-dev-server": "^3.1.5"

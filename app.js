@@ -1,7 +1,7 @@
-import {Global, css} from '@emotion/core';
-import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDom from 'react-dom';
+import {css, Global} from '@emotion/core';
+import * as Sentry from '@sentry/browser';
 
 import FileBrowser from './components/fileBrowser';
 

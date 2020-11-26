@@ -15,9 +15,9 @@ module.exports = {
     publicPath: '/_static/',
   },
   devtool: IS_PROD ? 'source-map' : 'cheap-module-eval-source-map',
-  devServer: { port: 9000, hot: true },
+  devServer: {port: 9000, hot: true},
   optimization: {
-    splitChunks: { chunks: 'all' },
+    splitChunks: {chunks: 'all'},
   },
   module: {
     rules: [
@@ -26,7 +26,7 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: [
-            ['@babel/preset-env', { targets: { chrome: '64' } }],
+            ['@babel/preset-env', {targets: {chrome: '64'}}],
             ['@babel/preset-react'],
           ],
           plugins: [['@babel/plugin-proposal-class-properties']],
@@ -38,7 +38,7 @@ module.exports = {
         use: [
           {
             loader: 'svg-sprite-loader',
-            options: { spriteFilename: 'sprite.[hash].svg', esModule: false },
+            options: {spriteFilename: 'sprite.[hash].svg', esModule: false},
           },
           {
             loader: 'svgo-loader',
