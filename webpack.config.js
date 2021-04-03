@@ -11,11 +11,11 @@ module.exports = {
   entry: './app.js',
   output: {
     path: path.resolve(__dirname, './dist/_static'),
-    filename: '[name].[hash].js',
+    filename: '[name].[fullhash].js',
     publicPath: '/_static/',
   },
-  devtool: IS_PROD ? 'source-map' : 'cheap-module-eval-source-map',
-  devServer: {port: 9000, hot: true},
+  devtool: IS_PROD ? 'source-map' : 'eval-cheap-module-source-map',
+  devServer: {port: 8080, hot: true},
   optimization: {
     splitChunks: {chunks: 'all'},
   },
@@ -38,7 +38,7 @@ module.exports = {
         use: [
           {
             loader: 'svg-sprite-loader',
-            options: {spriteFilename: 'sprite.[hash].svg', esModule: false},
+            options: {spriteFilename: 'sprite.[fullhash].svg', esModule: false},
           },
           {
             loader: 'svgo-loader',
