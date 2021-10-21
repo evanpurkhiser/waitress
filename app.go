@@ -41,7 +41,7 @@ func getStaticHandler() http.Handler {
 	}
 
 	// Proxy to the development webpack server if no box is attached
-	target, _ := url.Parse("http://localhost:9000/")
+	target, _ := url.Parse("http://localhost:8080/")
 
 	return httputil.NewSingleHostReverseProxy(target)
 }
