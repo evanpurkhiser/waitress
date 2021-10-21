@@ -11,7 +11,8 @@ import (
 	"path"
 
 	"github.com/GeertJohan/go.rice"
-	"github.com/getsentry/raven-go"
+	"github.com/getsentry/sentry-go"
+	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/gorilla/mux"
 )
 
@@ -76,8 +77,10 @@ func buildRoutes() *mux.Router {
 		}
 	}
 
-	treeHandler = raven.RecoveryHandler(treeHandler)
-	fileHandler = raven.RecoveryHandler(fileHandler)
+	sentryHandler := sentryhttp.New(sentryhttp.Options{})
+
+	treeHandler = sentryHandler.HandleFunc(treeHandler)
+	fileHandler = sentryHandler.HandleFunc(fileHandler)
 
 	// Specific pattern match to allow for development webpack hot update json
 	// and js files served from the webpack dev server.
@@ -98,13 +101,18 @@ func buildRoutes() *mux.Router {
 }
 
 func setupRaven() {
-	raven.SetDSN("https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756")
+	var env string
 
 	if _, err := rice.FindBox("dist/_static"); err != nil {
-		raven.SetEnvironment("development")
+		env = "development"
 	} else {
-		raven.SetEnvironment("production")
+		env = "production"
 	}
+
+	sentry.Init(sentry.ClientOptions{
+		Dsn:         "https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756",
+		Environment: env,
+	})
 }
 
 func main() {
