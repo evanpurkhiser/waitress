@@ -1,10 +1,25 @@
-FROM alpine:3.9 as builder
+FROM debian:stable-slim as builder
 
-RUN apk add musl-dev make git go yarn
+RUN apt-get update \
+  && apt-get install -y \
+  curl \
+  make \
+  git \
+  golang \
+  ca-certificates \
+  --no-install-recommends
+
 COPY . .
+
+SHELL ["/bin/bash", "-c"]
+
+ENV VOLTA_HOME /root/.volta
+ENV PATH $VOLTA_HOME/bin:$PATH
+RUN curl https://get.volta.sh | bash
+
 RUN PATH=$PATH:$HOME/go/bin make
 
-FROM alpine:3.9
+FROM debian:stable-slim
 COPY --from=builder dist/waitress .
 
 EXPOSE 80
