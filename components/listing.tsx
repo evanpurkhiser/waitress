@@ -1,8 +1,11 @@
-import React from 'react';
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 
-const getDisabled = p =>
+type ListingProps = {
+  disabled?: boolean;
+};
+
+const getDisabled = (p: ListingProps) =>
   p.disabled &&
   css`
     filter: grayscale(1);
@@ -11,7 +14,7 @@ const getDisabled = p =>
     user-select: none;
   `;
 
-const Listing = styled('ul')`
+export const Listing = styled('ul')<ListingProps>`
   margin: 10px 0;
   padding: 0 2px;
   list-style: none;
@@ -19,7 +22,12 @@ const Listing = styled('ul')`
   ${getDisabled};
 `;
 
-const EmptyListing = styled(p => (
+type EmptyProps = {
+  className?: string;
+  folder?: string;
+};
+
+export const EmptyListing = styled((p: EmptyProps) => (
   <div className={p.className}>Nothing in {p.folder}</div>
 ))`
   flex-grow: 1;
@@ -33,7 +41,14 @@ const EmptyListing = styled(p => (
   margin: -10px 0 10px;
 `;
 
-const ListingItem = styled(p => (
+type ItemProps = {
+  className?: string;
+  path?: string;
+  onClick?: React.HTMLProps<HTMLAnchorElement>['onClick'];
+  children?: React.ReactNode;
+};
+
+export const ListingItem = styled((p: ItemProps) => (
   <li className={p.className}>
     <a href={p.path} onClick={p.onClick}>
       {p.children}
@@ -57,4 +72,3 @@ const ListingItem = styled(p => (
     color: #595e73;
   }
 `;
-export {EmptyListing, Listing, ListingItem};

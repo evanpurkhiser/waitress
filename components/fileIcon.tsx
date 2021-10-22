@@ -1,8 +1,7 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 // Alias file types to other icons
-const FILETYPE_ALIASES = {
+const FILETYPE_ALIASES: Record<string, string> = {
   sh: 'exe',
   gz: 'zip',
   tar: 'zip',
@@ -14,12 +13,18 @@ const FILETYPE_ALIASES = {
 const fileIcons = require.context('../icons', true, /.*\.svg/);
 const fileTypes = fileIcons.keys().map(t => t.slice(2, -4));
 
-const FileIcon = styled(p => {
+type Props = {
+  className?: string;
+  isDir: boolean;
+  path: string;
+};
+
+const FileIcon = styled((p: Props) => {
   let type = !p.isDir
-    ? (p.path.match(/.+\.(.*)$/) || [null, ''])[1].toLowerCase()
+    ? (p.path.match(/.+\.(.*)$/) || [null, ''])?.[1]?.toLowerCase() ?? ''
     : 'folder';
 
-  type = FILETYPE_ALIASES[type] || type;
+  type = FILETYPE_ALIASES[type] ?? type;
   type = fileTypes.includes(type) ? type : 'file';
 
   const {viewBox, id} = fileIcons(`./${type}.svg`);

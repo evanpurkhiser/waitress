@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 
-const LoadingSpinner = styled('div')`
+type Props = {
+  size: number;
+};
+
+const LoadingSpinner = styled('div')<Props>`
   @keyframes loader {
     0% {
       transform: rotate(0deg);

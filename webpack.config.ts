@@ -1,14 +1,14 @@
-/* eslint-env node */
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import SpriteLoaderPlugin from 'svg-sprite-loader/plugin';
+import * as webpack from 'webpack';
 
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+import path from 'path';
 
 const IS_PROD = process.argv.find(a => a.includes('mode=production'));
 
-module.exports = {
-  entry: './app.js',
+const config: webpack.Configuration = {
+  entry: './app.tsx',
   output: {
     path: path.resolve(__dirname, './dist/_static'),
     filename: '[name].[fullhash].js',
@@ -19,15 +19,19 @@ module.exports = {
   optimization: {
     splitChunks: {chunks: 'all'},
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(t|j)s/,
         loader: 'babel-loader',
         options: {
           presets: [
-            ['@babel/preset-env', {targets: {chrome: '64'}}],
-            ['@babel/preset-react'],
+            ['@babel/preset-env'],
+            ['@babel/preset-typescript'],
+            ['@babel/preset-react', {runtime: 'automatic'}],
           ],
           plugins: [['@babel/plugin-proposal-class-properties']],
         },
@@ -52,7 +56,11 @@ module.exports = {
       template: 'app.html',
       favicon: 'icons/favicon.ico',
     }),
-    new SpriteLoaderPlugin(),
+    new ForkTsCheckerWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    // @ts-expect-error The types on this are unfortunately not correct
+    new SpriteLoaderPlugin(),
   ],
 };
+
+export default config;

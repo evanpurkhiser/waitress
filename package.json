@@ -5,37 +5,54 @@
   "author": "Evan Purkhiser",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.14.6",
+    "@babel/core": "^7.15.8",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/preset-env": "^7.14.5",
+    "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
-    "@emotion/react": "^11.4.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-    "@sentry/browser": "^6.7.1",
-    "babel-loader": "^8.2.2",
+    "@sentry/browser": "^6.13.3",
+    "@sentry/react": "^6.13.3",
+    "@sentry/tracing": "^6.13.3",
+    "@types/react": "^17.0.31",
+    "@types/react-dom": "^17.0.10",
+    "@types/svg-sprite-loader": "^3.9.4",
+    "@types/webpack-bundle-analyzer": "^4.4.1",
+    "@types/webpack-env": "^1.16.3",
+    "babel-loader": "^8.2.3",
     "file-loader": "^6.1.0",
-    "html-webpack-plugin": "^5.3.1",
+    "fork-ts-checker-webpack-plugin": "^6.4.0",
+    "html-webpack-plugin": "^5.4.0",
     "pretty-bytes": "^5.6.0",
     "prop-types": "^15.6.2",
     "react": "^17.0.2",
-    "react-document-title": "^2.0.3",
     "react-dom": "^17.0.2",
-    "static-site-generator-webpack-plugin": "^3.1.0",
-    "svg-sprite-loader": "^6.0.7",
-    "svgo": "^2.3.0",
+    "svg-sprite-loader": "^6.0.10",
+    "svgo": "^2.7.0",
     "svgo-loader": "^3.0.0",
-    "typescript": "^4.3.4",
-    "webpack": "^5.39.1",
-    "webpack-cli": "^4.7.2"
+    "ts-node": "^10.3.1",
+    "typescript": "^4.4.4",
+    "typescript-styled-plugin": "^0.18.1",
+    "webpack": "^5.59.1",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.1"
   },
   "devDependencies": {
     "@evanpurkhiser/eslint-config": "^0.10.1",
     "eslint": "^7.29.0",
-    "prettier": "^2.3.1",
+    "prettier": "^2.4.1",
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
     "build": "webpack --mode=production",
     "server": "webpack serve --hot --mode=development"
-  }
+  },
+  "volta": {
+    "node": "16.12.0",
+    "yarn": "1.22.4"
+  },
+  "browserslist": [
+    "last 2 chrome versions"
+  ]
 }

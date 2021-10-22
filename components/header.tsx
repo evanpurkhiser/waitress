@@ -1,9 +1,15 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 import LoadingSpinner from './loadingSpinner';
 
-const Header = styled(p => (
+type Props = {
+  className?: string;
+  title: string;
+  isLoading?: boolean;
+  onClick: React.HTMLProps<HTMLHeadingElement>['onClick'];
+};
+
+const Header = styled((p: Props) => (
   <header className={p.className}>
     <h1 onClick={p.onClick}>{p.title}</h1>
     {p.isLoading && <LoadingSpinner size={16} />}
@@ -20,7 +26,6 @@ const Header = styled(p => (
     cursor: pointer;
     flex-grow: 0;
   }
-}
 `;
 
 export default Header;
