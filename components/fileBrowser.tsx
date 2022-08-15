@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {memo, useCallback, useEffect, useMemo} from 'react';
 import styled from '@emotion/styled';
 import prettyBytes from 'pretty-bytes';
 
@@ -15,13 +15,13 @@ type FileProps = TreeNode & {
   onClick: React.ComponentProps<typeof ListingItem>['onClick'];
 };
 
-const File = ({path, onClick, isDir, name, size}: FileProps) => (
-  <ListingItem path={path} onClick={onClick}>
+const File = memo(({path, onClick, isDir, name, size}: FileProps) => (
+  <ListingItem {...{path, onClick}}>
     <FileIcon path={path} isDir={isDir} />
     <FileName>{name}</FileName>
     <FileSize>{prettyBytes(size ?? 0)}</FileSize>
   </ListingItem>
-);
+));
 
 function FileBrowser() {
   const {
@@ -40,21 +40,31 @@ function FileBrowser() {
 
   useEffect(() => void (document.title = pageTitle), [pageTitle]);
 
+  const clickHandlers = useMemo(
+    () =>
+      Object.fromEntries(
+        files.map(k => [k, (e: React.MouseEvent) => navigate.toItem(e, k)])
+      ),
+    [files, navigate.toItem]
+  );
+
   const listItems = files.map(k => (
     <File
       {...node.children[k]}
       key={k}
       name={k}
       path={pathForName(k)}
-      onClick={e => navigate.toItem(e, k)}
+      onClick={clickHandlers[k]}
     />
   ));
+
+  const navigateHome = useCallback(() => navigate.toPath([]), [navigate.toPath]);
 
   return (
     <Browser>
       <Header
         title={title}
-        onClick={() => navigate.toPath([])}
+        onClick={navigateHome}
         isLoading={node.shallow && isLoading}
       />
       <Listing disabled={isTransitioning}>{listItems}</Listing>
