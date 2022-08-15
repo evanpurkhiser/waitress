@@ -1,26 +1,30 @@
 import {memo, useCallback, useEffect, useMemo} from 'react';
 import styled from '@emotion/styled';
 import prettyBytes from 'pretty-bytes';
+import type Fuse from 'fuse.js';
 
 import {FileName, FileSize} from './attributes';
 import FileIcon from './fileIcon';
 import Header from './header';
-import {EmptyListing, Listing, ListingItem} from './listing';
+import {Divider, EmptyListing, Listing, ListingItem} from './listing';
 import {TreeNode} from './types';
 import useFileBrowser from './useFileBrowser';
 import useKeyboardNavigate from './useKeyboardNavigate';
+import useFileFilter from './useFileFilter';
+import MatchHighlight from './matchHighlight';
 
 type FileProps = TreeNode & {
   path: string;
   name: string;
   focused: boolean;
   onClick: React.ComponentProps<typeof ListingItem>['onClick'];
+  match?: Fuse.FuseResultMatch;
 };
 
-const File = memo(({path, onClick, focused, isDir, name, size}: FileProps) => (
+const File = memo(({path, onClick, focused, match, isDir, name, size}: FileProps) => (
   <ListingItem {...{path, onClick, focused}}>
     <FileIcon path={path} isDir={isDir} />
-    <FileName>{name}</FileName>
+    <FileName>{match ? <MatchHighlight match={match} /> : name}</FileName>
     <FileSize>{prettyBytes(size ?? 0)}</FileSize>
   </ListingItem>
 ));
@@ -37,14 +41,25 @@ function FileBrowser() {
     isFirstLoad,
   } = useFileBrowser();
 
-  // Handle keyboard navigation
-  const {focused} = useKeyboardNavigate({list: files, onSelect: navigate.toItem});
-
   const title = window.location.hostname;
   const pageTitle = path.slice(-1)[0] ?? title;
 
   // Update page title
   useEffect(() => void (document.title = pageTitle), [pageTitle]);
+
+  // Support filtering via an input in the header
+  const {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap} = useFileFilter({
+    files,
+  });
+
+  // Handle keyboard navigation
+  const {focused, setFocus} = useKeyboardNavigate({
+    list: allFiles,
+    onSelect: navigate.toItem,
+  });
+
+  // Reset focus to the first item when allFiles changes
+  useEffect(() => setFocus(allFiles[0] ?? null), [allFiles]);
 
   // momoize click handlers to avoid re-renders of File nodes
   const clickHandlers = useMemo(
@@ -55,16 +70,20 @@ function FileBrowser() {
     [files, navigate.toItem]
   );
 
-  const listItems = files.map(k => (
-    <File
-      {...node.children[k]}
-      key={k}
-      name={k}
-      path={pathForName(k)}
-      focused={k === focused}
-      onClick={clickHandlers[k]}
-    />
-  ));
+  const makeFileNode = useCallback(
+    (k: string) => (
+      <File
+        {...node.children[k]}
+        key={k}
+        name={k}
+        path={pathForName(k)}
+        focused={k === focused}
+        match={matchMap[k]}
+        onClick={clickHandlers[k]}
+      />
+    ),
+    [node, pathForName, focused, matchMap, clickHandlers]
+  );
 
   const navigateHome = useCallback(() => navigate.toPath([]), [navigate.toPath]);
 
@@ -72,11 +91,16 @@ function FileBrowser() {
     <Browser>
       <Header
         title={title}
-        onClick={navigateHome}
+        onTitleClick={navigateHome}
+        onFilterChange={setFilter}
         isLoading={node.shallow && isLoading}
       />
-      <Listing disabled={isTransitioning}>{listItems}</Listing>
-      {!isFirstLoad && listItems.length === 0 && <EmptyListing folder={pageTitle} />}
+      <Listing disabled={isTransitioning}>
+        {matchedFiles.map(makeFileNode)}
+        {matchedFiles.length > 0 && <Divider />}
+        {unmatchedFiles.map(makeFileNode)}
+      </Listing>
+      {!isFirstLoad && allFiles.length === 0 && <EmptyListing folder={pageTitle} />}
     </Browser>
   );
 }

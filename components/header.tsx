@@ -1,23 +1,27 @@
 import styled from '@emotion/styled';
 
+import Filter from './filter';
 import LoadingSpinner from './loadingSpinner';
 
 type Props = {
   className?: string;
   title: string;
   isLoading?: boolean;
-  onClick: React.HTMLProps<HTMLHeadingElement>['onClick'];
+  onTitleClick: React.HTMLProps<HTMLHeadingElement>['onClick'];
+  onFilterChange: (search: string) => void;
 };
 
 const Header = styled((p: Props) => (
   <header className={p.className}>
-    <h1 onClick={p.onClick}>{p.title}</h1>
+    <h1 onClick={p.onTitleClick}>{p.title}</h1>
+    <Filter onChange={p.onFilterChange} />
     {p.isLoading && <LoadingSpinner size={16} />}
   </header>
 ))`
   margin: 15px 0;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  gap: 12px;
   align-items: center;
 
   h1 {

@@ -22,6 +22,11 @@ export const Listing = styled('ul')<ListingProps>`
   ${getDisabled};
 `;
 
+export const Divider = styled('hr')`
+  border: none;
+  margin: 10px 0;
+`;
+
 type EmptyProps = {
   className?: string;
   folder?: string;
