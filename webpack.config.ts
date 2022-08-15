@@ -15,7 +15,7 @@ const config: webpack.Configuration = {
     publicPath: '/_static/',
   },
   devtool: IS_PROD ? 'source-map' : 'eval-cheap-module-source-map',
-  devServer: {port: 8080},
+  devServer: {port: 8080, hot: true},
   optimization: {
     splitChunks: {chunks: 'all'},
   },
@@ -57,7 +57,6 @@ const config: webpack.Configuration = {
       favicon: 'icons/favicon.ico',
     }),
     new ForkTsCheckerWebpackPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     // @ts-expect-error The types on this are unfortunately not correct
     new SpriteLoaderPlugin(),
   ],
