@@ -8,15 +8,17 @@ import Header from './header';
 import {EmptyListing, Listing, ListingItem} from './listing';
 import {TreeNode} from './types';
 import useFileBrowser from './useFileBrowser';
+import useKeyboardNavigate from './useKeyboardNavigate';
 
 type FileProps = TreeNode & {
   path: string;
   name: string;
+  focused: boolean;
   onClick: React.ComponentProps<typeof ListingItem>['onClick'];
 };
 
-const File = memo(({path, onClick, isDir, name, size}: FileProps) => (
-  <ListingItem {...{path, onClick}}>
+const File = memo(({path, onClick, focused, isDir, name, size}: FileProps) => (
+  <ListingItem {...{path, onClick, focused}}>
     <FileIcon path={path} isDir={isDir} />
     <FileName>{name}</FileName>
     <FileSize>{prettyBytes(size ?? 0)}</FileSize>
@@ -35,11 +37,16 @@ function FileBrowser() {
     isFirstLoad,
   } = useFileBrowser();
 
+  // Handle keyboard navigation
+  const {focused} = useKeyboardNavigate({list: files, onSelect: navigate.toItem});
+
   const title = window.location.hostname;
   const pageTitle = path.slice(-1)[0] ?? title;
 
+  // Update page title
   useEffect(() => void (document.title = pageTitle), [pageTitle]);
 
+  // momoize click handlers to avoid re-renders of File nodes
   const clickHandlers = useMemo(
     () =>
       Object.fromEntries(
@@ -54,6 +61,7 @@ function FileBrowser() {
       key={k}
       name={k}
       path={pathForName(k)}
+      focused={k === focused}
       onClick={clickHandlers[k]}
     />
   ));

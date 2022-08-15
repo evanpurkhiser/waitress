@@ -44,12 +44,17 @@ export const EmptyListing = styled((p: EmptyProps) => (
 type ItemProps = {
   className?: string;
   path?: string;
+  focused?: boolean;
   onClick?: React.HTMLProps<HTMLAnchorElement>['onClick'];
   children?: React.ReactNode;
 };
 
+function scrollToFocus(el: HTMLLIElement | null) {
+  el?.scrollIntoView({block: 'center'});
+}
+
 export const ListingItem = styled((p: ItemProps) => (
-  <li className={p.className}>
+  <li className={p.className} ref={p.focused ? scrollToFocus : undefined}>
     <a href={p.path} onClick={p.onClick}>
       {p.children}
     </a>
@@ -58,6 +63,9 @@ export const ListingItem = styled((p: ItemProps) => (
   margin: 0 -10px;
   border-radius: 3px;
   cursor: pointer;
+
+  ${p => p.focused && 'background: #fafafa'};
+  scroll-padding: 20px;
 
   &:hover {
     background: #fafafa;
