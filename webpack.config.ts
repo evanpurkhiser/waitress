@@ -15,7 +15,7 @@ const config: webpack.Configuration = {
     publicPath: '/_static/',
   },
   devtool: IS_PROD ? 'source-map' : 'eval-cheap-module-source-map',
-  devServer: {port: 8080, hot: true},
+  devServer: {port: 8080},
   optimization: {
     splitChunks: {chunks: 'all'},
   },

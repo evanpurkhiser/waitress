@@ -1,5 +1,6 @@
 import {Fragment} from 'react';
-import ReactDom from 'react-dom';
+import {createRoot} from 'react-dom/client';
+
 import {css, Global} from '@emotion/react';
 import * as Sentry from '@sentry/react';
 import {Integrations} from '@sentry/tracing';
@@ -32,4 +33,4 @@ const app = (
   </Fragment>
 );
 
-ReactDom.render(app, document.getElementById('container'));
+createRoot(document.getElementById('container')).render(app);
