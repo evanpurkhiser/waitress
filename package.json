@@ -40,7 +40,7 @@
     "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
-    "@evanpurkhiser/eslint-config": "^0.10.1",
+    "@evanpurkhiser/eslint-config": "^0.12.0",
     "eslint": "^8.22.0",
     "prettier": "^2.7.1",
     "webpack-dev-server": "^4.10.0"

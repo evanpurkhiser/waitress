@@ -78,7 +78,7 @@ function useKeyboardNavigate<T>({list, onSelect}: Props<T>) {
       // Reverse wraparound to the end
       setFocusIndex(newIndex >= 0 ? newIndex : endIndex);
     },
-    [setFocusIndex, focusedIndex]
+    [setFocusIndex, focusedIndex, focused, list.length, onSelect]
   );
 
   useEffect(() => {

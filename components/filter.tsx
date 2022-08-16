@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import {useCallback, useEffect, useRef} from 'react';
+import styled from '@emotion/styled';
 
 /**
  * This is used to decide if a pressed key will focus the filter input. For
@@ -14,51 +14,54 @@ type Props = {
 function Filter({onChange}: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const focusOnGlobalInput = useCallback((e: KeyboardEvent) => {
-    if (inputRef.current === null) {
-      return;
-    }
+  const focusOnGlobalInput = useCallback(
+    (e: KeyboardEvent) => {
+      if (inputRef.current === null) {
+        return;
+      }
 
-    // Escape clears the input
-    if (e.key === 'Escape') {
-      inputRef.current.value = '';
-      inputRef.current.blur();
-      onChange('');
-      return;
-    }
+      // Escape clears the input
+      if (e.key === 'Escape') {
+        inputRef.current.value = '';
+        inputRef.current.blur();
+        onChange('');
+        return;
+      }
 
-    // Nothing else to do if we already have focus on the input
-    if (e.target === inputRef.current) {
-      return;
-    }
+      // Nothing else to do if we already have focus on the input
+      if (e.target === inputRef.current) {
+        return;
+      }
 
-    // handle cmd+a to select everything in the filter input
-    if (e.key === 'a' && e.metaKey) {
-      e.preventDefault();
+      // handle cmd+a to select everything in the filter input
+      if (e.key === 'a' && e.metaKey) {
+        e.preventDefault();
 
-      inputRef.current.setSelectionRange(0, inputRef.current.value.length);
+        inputRef.current.setSelectionRange(0, inputRef.current.value.length);
+        inputRef.current.focus();
+        return;
+      }
+
+      // Backspace triggers focus
+      if (e.key === 'Backspace') {
+        inputRef.current.focus();
+        return;
+      }
+
+      // Ignore anything that doesn't look like it could be part of a filename
+      if (e.key.match(KEY_REGEX) === null) {
+        return;
+      }
+
+      // Ignore with modifiers
+      if (e.altKey || e.metaKey || e.ctrlKey) {
+        return;
+      }
+
       inputRef.current.focus();
-      return;
-    }
-
-    // Backspace triggers focus
-    if (e.key === 'Backspace') {
-      inputRef.current.focus();
-      return;
-    }
-
-    // Ignore anything that doesn't look like it could be part of a filename
-    if (e.key.match(KEY_REGEX) === null) {
-      return;
-    }
-
-    // Ignore with modifiers
-    if (e.altKey || e.metaKey || e.ctrlKey) {
-      return;
-    }
-
-    inputRef.current.focus();
-  }, []);
+    },
+    [onChange]
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', focusOnGlobalInput);

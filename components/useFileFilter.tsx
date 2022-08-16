@@ -1,5 +1,5 @@
+import {useMemo, useState} from 'react';
 import Fuse from 'fuse.js';
-import {useEffect, useMemo, useRef, useState} from 'react';
 
 type Props = {
   /**
@@ -8,20 +8,15 @@ type Props = {
   files: string[];
 };
 
+const FUSE_OPTIONS = {useExtendedSearch: true, includeMatches: true};
+
 function useFileFilter({files}: Props) {
   const [filter, setFilter] = useState('');
 
-  const fuse = useRef<Fuse<string>>();
-
-  if (fuse.current === undefined) {
-    fuse.current = new Fuse([], {useExtendedSearch: true, includeMatches: true});
-  }
-
-  // Update the fuse collection when the file list changes
-  useEffect(() => fuse.current?.setCollection(files), [files]);
+  const fuse = useMemo(() => new Fuse(files, FUSE_OPTIONS), [files]);
 
   // Perform a search when the filter changes
-  const filterResult = useMemo(() => fuse.current?.search(filter), [filter]);
+  const filterResult = useMemo(() => fuse.search(filter), [fuse, filter]);
 
   const matchedFiles = useMemo(
     () => filterResult?.map(r => r.item) ?? [],
@@ -42,8 +37,6 @@ function useFileFilter({files}: Props) {
     () => Object.fromEntries(filterResult?.map(r => [r.item, r.matches?.[0]]) ?? []),
     [filterResult]
   ) as Record<string, Fuse.FuseResultMatch | undefined>;
-
-  console.log(matchMap);
 
   return {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap};
 }

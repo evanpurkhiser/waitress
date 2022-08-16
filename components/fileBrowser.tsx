@@ -1,17 +1,17 @@
 import {memo, useCallback, useEffect, useMemo} from 'react';
 import styled from '@emotion/styled';
-import prettyBytes from 'pretty-bytes';
 import type Fuse from 'fuse.js';
+import prettyBytes from 'pretty-bytes';
 
 import {FileName, FileSize} from './attributes';
 import FileIcon from './fileIcon';
 import Header from './header';
 import {Divider, EmptyListing, Listing, ListingItem} from './listing';
+import MatchHighlight from './matchHighlight';
 import {TreeNode} from './types';
 import useFileBrowser from './useFileBrowser';
-import useKeyboardNavigate from './useKeyboardNavigate';
 import useFileFilter from './useFileFilter';
-import MatchHighlight from './matchHighlight';
+import useKeyboardNavigate from './useKeyboardNavigate';
 
 type FileProps = TreeNode & {
   path: string;
@@ -59,7 +59,10 @@ function FileBrowser() {
   });
 
   // Reset focus to the first item when allFiles changes
-  useEffect(() => setFocus(allFiles[0] ?? null), [allFiles]);
+  useEffect(
+    () => setFocus(focused === null ? null : allFiles[0] ?? null),
+    [setFocus, allFiles]
+  );
 
   // momoize click handlers to avoid re-renders of File nodes
   const clickHandlers = useMemo(
@@ -67,7 +70,7 @@ function FileBrowser() {
       Object.fromEntries(
         files.map(k => [k, (e: React.MouseEvent) => navigate.toItem(e, k)])
       ),
-    [files, navigate.toItem]
+    [files, navigate]
   );
 
   const makeFileNode = useCallback(
@@ -85,7 +88,7 @@ function FileBrowser() {
     [node, pathForName, focused, matchMap, clickHandlers]
   );
 
-  const navigateHome = useCallback(() => navigate.toPath([]), [navigate.toPath]);
+  const navigateHome = useCallback(() => navigate.toPath([]), [navigate]);
 
   return (
     <Browser>

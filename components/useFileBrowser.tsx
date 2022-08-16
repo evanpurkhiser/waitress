@@ -107,7 +107,7 @@ function useFileBrowser() {
 
       window.scrollTo(0, 0);
     },
-    [path, handlePathUpdate]
+    [handlePathUpdate]
   );
 
   /**
@@ -143,14 +143,12 @@ function useFileBrowser() {
 
   const node = useMemo(
     () => (isTransitioning ? locate(tree, lastPath) : targetItem),
-    [tree, lastPath, isTransitioning]
+    [tree, lastPath, isTransitioning, targetItem]
   );
-
-  const fileMap = node.children ?? {};
 
   const files = useMemo(
     () =>
-      Object.keys(fileMap).sort((a, b) => {
+      Object.keys(node.children ?? {}).sort((a, b) => {
         const c = node.children[a];
         const d = node.children[b];
 
@@ -158,7 +156,7 @@ function useFileBrowser() {
 
         return c.isDir === d.isDir ? a.localeCompare(b, 'en', {numeric: true}) : dirSort;
       }),
-    [fileMap]
+    [node.children]
   );
 
   const pathForName = useCallback((name: string) => makeUrl([...path, name]), [path]);
