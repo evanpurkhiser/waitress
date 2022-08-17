@@ -68,7 +68,7 @@ function Filter({onChange}: Props) {
     return () => document.removeEventListener('keydown', focusOnGlobalInput);
   });
 
-  return <SearchInput required onChange={e => onChange(e.target.value)} ref={inputRef} />;
+  return <SearchInput onChange={e => onChange(e.target.value)} ref={inputRef} />;
 }
 
 export default Filter;
@@ -83,4 +83,8 @@ const SearchInput = styled('input')`
   color: #97979c;
   caret-color: #97979c;
   cursor: default;
+
+  &:placeholder-shown {
+    opacity: 0;
+  }
 `;
