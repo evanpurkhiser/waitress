@@ -2,19 +2,23 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 
 type Props<T> = {
   /**
-   * The lsit of values to navigate through
+   * The list of values to navigate through
    */
   list: T[];
   /**
    * Callback triggered when the item is selected
    */
   onSelect: (item: T, e: KeyboardEvent) => void;
+  /**
+   * Callback triggered when escape is pressed
+   */
+  onEscape: (e: KeyboardEvent) => void;
 };
 
 /**
  * Navigate a list of items using the up/down arrow and ^j/^k keys
  */
-function useKeyboardNavigate<T>({list, onSelect}: Props<T>) {
+function useKeyboardNavigate<T>({list, onSelect, onEscape}: Props<T>) {
   const [focused, setFocus] = useState<T | null>(null);
 
   const setFocusIndex = useCallback(
@@ -38,6 +42,7 @@ function useKeyboardNavigate<T>({list, onSelect}: Props<T>) {
       // Escape clears the keyboard selection
       if (e.key === 'Escape') {
         setFocus(null);
+        onEscape(e);
         return;
       }
 
@@ -81,7 +86,7 @@ function useKeyboardNavigate<T>({list, onSelect}: Props<T>) {
       // Reverse wraparound to the end
       setFocusIndex(newIndex >= 0 ? newIndex : endIndex);
     },
-    [setFocusIndex, focusedIndex, focused, list.length, onSelect]
+    [setFocusIndex, focusedIndex, focused, list.length, onSelect, onEscape]
   );
 
   useEffect(() => {

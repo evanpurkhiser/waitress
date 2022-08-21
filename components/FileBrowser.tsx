@@ -34,6 +34,7 @@ function FileBrowser() {
   const {focused, setFocus} = useKeyboardNavigate({
     list: allFiles,
     onSelect: navigate.toItem,
+    onEscape: navigate.toParent,
   });
 
   const hasFilter = filter.length > 0;
