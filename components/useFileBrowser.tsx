@@ -101,8 +101,8 @@ function useFileBrowser() {
    * Navigates to a specific path
    */
   const navigateToPath = useCallback(
-    (path: string[]) => {
-      history.pushState(null, '', makeUrl(path));
+    (target: string[]) => {
+      history.pushState(null, '', makeUrl(target));
       handlePathUpdate();
 
       window.scrollTo(0, 0);
