@@ -20,13 +20,13 @@ const emptyTree: TreeNode = {
  */
 function locate(object: TreeNode, path: string[]) {
   let index = 0;
-  const {length} = path;
+  let foundObject: TreeNode | undefined = object;
 
-  while (object?.children && index < length) {
-    object = object.children[path[index++]];
+  while (foundObject?.children && index < path.length) {
+    foundObject = foundObject?.children[path[index++]!];
   }
 
-  const result = index === length ? object : null;
+  const result = index === path.length ? foundObject : null;
 
   return result ?? emptyTree;
 }
@@ -149,8 +149,8 @@ function useFileBrowser() {
   const files = useMemo(
     () =>
       Object.keys(node.children ?? {}).sort((a, b) => {
-        const c = node.children[a];
-        const d = node.children[b];
+        const c = node.children[a]!;
+        const d = node.children[b]!;
 
         const dirSort = d.isDir ? 1 : -1;
 

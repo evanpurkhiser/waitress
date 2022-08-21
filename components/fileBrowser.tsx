@@ -76,7 +76,7 @@ function FileBrowser() {
   const makeFileNode = useCallback(
     (k: string) => (
       <File
-        {...node.children[k]}
+        {...node.children[k]!}
         key={k}
         name={k}
         path={pathForName(k)}

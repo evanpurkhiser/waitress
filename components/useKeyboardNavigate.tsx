@@ -17,7 +17,10 @@ type Props<T> = {
 function useKeyboardNavigate<T>({list, onSelect}: Props<T>) {
   const [focused, setFocus] = useState<T | null>(null);
 
-  const setFocusIndex = useCallback((index: number) => setFocus(list[index]), [list]);
+  const setFocusIndex = useCallback(
+    (index: number) => setFocus(list[index] ?? null),
+    [list]
+  );
 
   const focusedIndex = useMemo(
     () => (focused === null ? -1 : list.indexOf(focused)),

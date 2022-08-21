@@ -22,7 +22,7 @@ const getFuseMatches = ({value, indices}: Match): MatchResult => {
 
   const strLength = value.length;
   const result: MatchResult = [];
-  let prev = [0, -1];
+  let prev: [number, number] = [0, -1];
 
   indices.forEach(([start, end]) => {
     // Unhighlighted string before the match

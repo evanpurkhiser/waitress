@@ -12,6 +12,7 @@
     "inlineSources": true,
     "outDir": "./dist",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "rootDir": "./components",
     "plugins": [
       {
