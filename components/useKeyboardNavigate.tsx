@@ -8,7 +8,7 @@ type Props<T> = {
   /**
    * Callback triggered when the item is selected
    */
-  onSelect: (e: KeyboardEvent, item: T) => void;
+  onSelect: (item: T, e: KeyboardEvent) => void;
 };
 
 /**
@@ -31,7 +31,7 @@ function useKeyboardNavigate<T>({list, onSelect}: Props<T>) {
     (e: KeyboardEvent) => {
       // Handle keyboard selection
       if (e.key === 'Enter' && focused !== null) {
-        onSelect(e, focused);
+        onSelect(focused, e);
         return;
       }
 

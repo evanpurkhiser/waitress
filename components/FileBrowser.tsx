@@ -76,7 +76,7 @@ function FileBrowser() {
   const clickHandlers = useMemo(
     () =>
       Object.fromEntries(
-        files.map(k => [k, (e: React.MouseEvent) => navigate.toItem(e, k)])
+        files.map(k => [k, (e: React.MouseEvent) => navigate.toItem(k, e)])
       ),
     [files, navigate]
   );

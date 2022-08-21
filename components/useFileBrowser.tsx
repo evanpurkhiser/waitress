@@ -101,31 +101,36 @@ function useFileBrowser() {
    * Navigates to a specific path
    */
   const navigateToPath = useCallback(
-    (target: string[]) => {
-      history.pushState(null, '', makeUrl(target));
-      handlePathUpdate();
-
-      window.scrollTo(0, 0);
-    },
-    [handlePathUpdate]
-  );
-
-  /**
-   * Navigates to a specific folder, relative to the current path
-   */
-  const navigateToItem = useCallback(
-    (e: Event | React.UIEvent, target: string) => {
-      const targetPath = [...path, target];
+    (targetPath: string[], e?: Event | React.UIEvent) => {
       const node = locate(tree, targetPath);
 
       if (!node.isDir) {
         return;
       }
 
-      e.preventDefault();
-      navigateToPath(targetPath);
+      e?.preventDefault();
+      history.pushState(null, '', makeUrl(targetPath));
+      handlePathUpdate();
+
+      window.scrollTo(0, 0);
     },
-    [navigateToPath, path, tree]
+    [handlePathUpdate, tree]
+  );
+
+  /**
+   * Navigates to a specific folder, relative to the current path
+   */
+  const navigateToItem = useCallback(
+    (target: string, e?: Event | React.UIEvent) => navigateToPath([...path, target], e),
+    [navigateToPath, path]
+  );
+
+  /**
+   * Navigate up a directory
+   */
+  const navigateToParent = useCallback(
+    (e?: Event | React.UIEvent) => navigateToPath(path.slice(0, -1), e),
+    [navigateToPath, path]
   );
 
   useEffect(() => {
@@ -165,8 +170,9 @@ function useFileBrowser() {
     () => ({
       toPath: navigateToPath,
       toItem: navigateToItem,
+      toParent: navigateToParent,
     }),
-    [navigateToPath, navigateToItem]
+    [navigateToPath, navigateToItem, navigateToParent]
   );
 
   return {
