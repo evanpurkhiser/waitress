@@ -8,7 +8,12 @@ type Props = {
   files: string[];
 };
 
-const FUSE_OPTIONS = {useExtendedSearch: true, includeMatches: true};
+const FUSE_OPTIONS: Fuse.IFuseOptions<string> = {
+  useExtendedSearch: true,
+  includeMatches: true,
+  minMatchCharLength: 2,
+  threshold: 0.4,
+};
 
 function useFileFilter({files}: Props) {
   const [filter, setFilter] = useState('');
