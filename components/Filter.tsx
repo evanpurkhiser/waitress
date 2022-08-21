@@ -68,6 +68,9 @@ function Filter() {
     return () => document.removeEventListener('keydown', focusOnGlobalInput);
   });
 
+  // Clear focus when empty
+  useEffect(() => void (filter === '' && inputRef.current?.blur()), [filter]);
+
   return (
     <SearchInput
       onChange={e => setFilter(e.target.value)}
