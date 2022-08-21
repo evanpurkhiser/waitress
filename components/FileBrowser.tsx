@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 import type Fuse from 'fuse.js';
 import prettyBytes from 'pretty-bytes';
 
-import {FileName, FileSize} from './attributes';
-import FileIcon from './fileIcon';
-import Header from './header';
-import {Divider, EmptyListing, Listing, ListingItem} from './listing';
-import MatchHighlight from './matchHighlight';
+import {FileName, FileSize} from './Attributes';
+import FileIcon from './FileIcon';
+import Header from './Header';
+import {Divider, EmptyListing, Listing, ListingItem} from './Listing';
+import MatchHighlight from './MatchHighlight';
 import {TreeNode} from './types';
 import useFileBrowser from './useFileBrowser';
 import useFileFilter from './useFileFilter';

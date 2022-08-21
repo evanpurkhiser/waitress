@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-import Filter from './filter';
-import LoadingSpinner from './loadingSpinner';
+import Filter from './Filter';
+import LoadingSpinner from './LoadingSpinner';
 
 type Props = {
   className?: string;
