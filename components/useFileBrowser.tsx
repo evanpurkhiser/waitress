@@ -103,13 +103,23 @@ function useFileBrowser() {
   const navigateToPath = useCallback(
     (targetPath: string[], e?: Event | React.UIEvent) => {
       const node = locate(tree, targetPath);
+      const url = makeUrl(targetPath);
 
-      if (!node.isDir) {
+      // Clicks fallthrough to browser behavior
+      if (!node.isDir && e?.type === 'click') {
         return;
       }
 
       e?.preventDefault();
-      history.pushState(null, '', makeUrl(targetPath));
+
+      // Other event triggers URL assignment for files
+      if (!node.isDir) {
+        location.assign(url);
+        return;
+      }
+
+      // Everything else is updates history state
+      history.pushState(null, '', url);
       handlePathUpdate();
 
       window.scrollTo(0, 0);
