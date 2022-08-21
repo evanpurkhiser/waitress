@@ -11,7 +11,12 @@ const useStore = create<Store>()(set => ({
   setFilter: value => set({filter: value}),
 }));
 
-const useFilter = () =>
-  useStore(state => [state.filter, state.setFilter] as const, shallow);
+function reduceFilterState(state: Store) {
+  return [state.filter, state.setFilter] as const;
+}
+
+function useFilter() {
+  return useStore(reduceFilterState, shallow);
+}
 
 export {useFilter, useStore};
