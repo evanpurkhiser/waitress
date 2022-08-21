@@ -8,13 +8,12 @@ type Props = {
   title: string;
   isLoading?: boolean;
   onTitleClick: React.HTMLProps<HTMLHeadingElement>['onClick'];
-  onFilterChange: (search: string) => void;
 };
 
 const Header = styled((p: Props) => (
   <header className={p.className}>
     <h1 onClick={p.onTitleClick}>{p.title}</h1>
-    <Filter onChange={p.onFilterChange} />
+    <Filter />
     {p.isLoading && <LoadingSpinner size={16} />}
   </header>
 ))`

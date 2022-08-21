@@ -1,5 +1,7 @@
-import {useMemo, useState} from 'react';
+import {useMemo} from 'react';
 import Fuse from 'fuse.js';
+
+import {useFilter} from './useStore';
 
 type Props = {
   /**
@@ -16,7 +18,7 @@ const FUSE_OPTIONS: Fuse.IFuseOptions<string> = {
 };
 
 function useFileFilter({files}: Props) {
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useFilter();
 
   const fuse = useMemo(() => new Fuse(files, FUSE_OPTIONS), [files]);
 

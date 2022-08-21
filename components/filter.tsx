@@ -1,18 +1,18 @@
 import {useCallback, useEffect, useRef} from 'react';
 import styled from '@emotion/styled';
 
+import {useFilter} from './useStore';
+
 /**
  * This is used to decide if a pressed key will focus the filter input. For
  * example, we probably don't want / to focus the filter input.
  */
 const KEY_REGEX = /^[a-zA-Z0-9.!@#$%^&*())\-=]$/;
 
-type Props = {
-  onChange: (value: string) => void;
-};
-
-function Filter({onChange}: Props) {
+function Filter() {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [filter, setFilter] = useFilter();
 
   const focusOnGlobalInput = useCallback(
     (e: KeyboardEvent) => {
@@ -24,7 +24,7 @@ function Filter({onChange}: Props) {
       if (e.key === 'Escape') {
         inputRef.current.value = '';
         inputRef.current.blur();
-        onChange('');
+        setFilter('');
         return;
       }
 
@@ -60,7 +60,7 @@ function Filter({onChange}: Props) {
 
       inputRef.current.focus();
     },
-    [onChange]
+    [setFilter]
   );
 
   useEffect(() => {
@@ -68,7 +68,13 @@ function Filter({onChange}: Props) {
     return () => document.removeEventListener('keydown', focusOnGlobalInput);
   });
 
-  return <SearchInput onChange={e => onChange(e.target.value)} ref={inputRef} />;
+  return (
+    <SearchInput
+      onChange={e => setFilter(e.target.value)}
+      value={filter}
+      ref={inputRef}
+    />
+  );
 }
 
 export default Filter;
@@ -83,6 +89,7 @@ const SearchInput = styled('input')`
   color: #97979c;
   caret-color: #97979c;
   cursor: default;
+  pointer-events: none;
 
   &:placeholder-shown {
     opacity: 0;

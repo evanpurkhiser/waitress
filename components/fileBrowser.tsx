@@ -95,7 +95,6 @@ function FileBrowser() {
       <Header
         title={title}
         onTitleClick={navigateHome}
-        onFilterChange={setFilter}
         isLoading={node.shallow && isLoading}
       />
       <Listing disabled={isTransitioning}>
