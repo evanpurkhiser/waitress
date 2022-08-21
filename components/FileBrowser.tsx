@@ -27,8 +27,9 @@ function FileBrowser() {
   useEffect(() => void (document.title = pageTitle), [pageTitle]);
 
   // Support filtering via an input in the header
-  const {filter, setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap} =
-    useFileFilter({files});
+  const {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap} = useFileFilter({
+    files,
+  });
 
   // Handle keyboard navigation
   const {focused, setFocus} = useKeyboardNavigate({
@@ -37,7 +38,7 @@ function FileBrowser() {
     onEscape: navigate.toParent,
   });
 
-  const hasFilter = filter.length > 0;
+  const hasFilter = matchedFiles.length > 0;
 
   // Reset the filter when the file list chagnes
   useEffect(() => setFilter(''), [setFilter, files]);
@@ -48,8 +49,8 @@ function FileBrowser() {
   // When we start typing focus the first item. When the filter becomes empty
   // clear the focus. Resets when the filtered file list changes
   useEffect(
-    () => setFocus(hasFilter ? allFiles[0] ?? null : null),
-    [setFocus, hasFilter, allFiles]
+    () => setFocus(hasFilter ? matchedFiles[0] ?? null : null),
+    [setFocus, hasFilter, matchedFiles]
   );
 
   // momoize click handlers to avoid re-renders of File nodes

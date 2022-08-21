@@ -45,7 +45,7 @@ function useFileFilter({files}: Props) {
     [filterResult]
   ) as Record<string, Fuse.FuseResultMatch | undefined>;
 
-  return {filter, setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap};
+  return {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap};
 }
 
 export default useFileFilter;
