@@ -1,33 +1,12 @@
-import {memo, useCallback, useEffect, useMemo} from 'react';
+import {useCallback, useEffect, useMemo} from 'react';
 import styled from '@emotion/styled';
-import type Fuse from 'fuse.js';
-import prettyBytes from 'pretty-bytes';
 
-import {FileName, FileSize} from './Attributes';
-import FileIcon from './FileIcon';
+import FileItem from './FileItem';
 import Header from './Header';
-import {Divider, EmptyListing, Listing, ListingItem} from './Listing';
-import MatchHighlight from './MatchHighlight';
-import {TreeNode} from './types';
+import {Divider, EmptyListing, Listing} from './Listing';
 import useFileBrowser from './useFileBrowser';
 import useFileFilter from './useFileFilter';
 import useKeyboardNavigate from './useKeyboardNavigate';
-
-type FileProps = TreeNode & {
-  path: string;
-  name: string;
-  focused: boolean;
-  onClick: React.ComponentProps<typeof ListingItem>['onClick'];
-  match?: Fuse.FuseResultMatch;
-};
-
-const File = memo(({path, onClick, focused, match, isDir, name, size}: FileProps) => (
-  <ListingItem {...{path, onClick, focused}}>
-    <FileIcon path={path} isDir={isDir} />
-    <FileName>{match ? <MatchHighlight match={match} /> : name}</FileName>
-    <FileSize>{prettyBytes(size ?? 0)}</FileSize>
-  </ListingItem>
-));
 
 function FileBrowser() {
   const {
@@ -83,7 +62,7 @@ function FileBrowser() {
 
   const makeFileNode = useCallback(
     (k: string) => (
-      <File
+      <FileItem
         {...node.children[k]!}
         key={k}
         name={k}
