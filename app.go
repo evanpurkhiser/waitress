@@ -100,7 +100,7 @@ func buildRoutes() *mux.Router {
 	return r
 }
 
-func setupRaven() {
+func setupSentry() {
 	var env string
 
 	if _, err := rice.FindBox("dist/_static"); err != nil {
@@ -116,7 +116,7 @@ func setupRaven() {
 }
 
 func main() {
-	setupRaven()
+	setupSentry()
 	flag.Parse()
 
 	r := buildRoutes()
