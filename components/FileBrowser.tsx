@@ -6,12 +6,14 @@ import Header from './Header';
 import {Divider, EmptyListing, Listing} from './Listing';
 import useFileBrowser from './useFileBrowser';
 import useFileFilter from './useFileFilter';
+import useGlobalCopy from './useGlobalCopy';
 import useKeyboardNavigate from './useKeyboardNavigate';
 
 function FileBrowser() {
   const {
     navigate,
     pathForName,
+    urlForName,
     path,
     files,
     node,
@@ -39,6 +41,9 @@ function FileBrowser() {
   });
 
   const hasFilter = matchedFiles.length > 0;
+
+  // Copy selected item URL or current directory URL
+  useGlobalCopy(urlForName(focused ?? ''));
 
   // Reset the filter when the file list chagnes
   useEffect(() => setFilter(''), [setFilter, files]);
