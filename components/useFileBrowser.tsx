@@ -3,9 +3,9 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {TreeNode} from './types';
 
 /**
- * Transform a path list to a URL
+ * Transform a path list to a absolute path
  */
-const makeUrl = (path: string[]) => `/${path.map(encodeURIComponent).join('/')}`;
+const makeAbsolutePath = (path: string[]) => `/${path.map(encodeURIComponent).join('/')}`;
 
 const emptyTree: TreeNode = {
   size: 0,
@@ -56,7 +56,7 @@ function useFileBrowser() {
     setIsLoading(true);
 
     try {
-      const resp = await fetch(`/_tree${makeUrl(treePath)}`, options);
+      const resp = await fetch(`/_tree${makeAbsolutePath(treePath)}`, options);
       setTree(await resp.json());
     } catch {
       // Nothing to do if we're aborting
@@ -103,7 +103,7 @@ function useFileBrowser() {
   const navigateToPath = useCallback(
     (targetPath: string[], e?: Event | React.UIEvent) => {
       const node = locate(tree, targetPath);
-      const url = makeUrl(targetPath);
+      const url = makeAbsolutePath(targetPath);
 
       // Clicks fallthrough to browser behavior
       if (!node.isDir && e?.type === 'click') {
@@ -174,7 +174,20 @@ function useFileBrowser() {
     [node.children]
   );
 
-  const pathForName = useCallback((name: string) => makeUrl([...path, name]), [path]);
+  const pathForName = useCallback(
+    (name: string) => makeAbsolutePath([...path, name]),
+    [path]
+  );
+
+  const urlForName = useCallback(
+    (name: string) => {
+      const url = new URL(window.location.href);
+      url.pathname = makeAbsolutePath([...path, name]);
+
+      return url.toString();
+    },
+    [path]
+  );
 
   const navigate = useMemo(
     () => ({
@@ -193,6 +206,7 @@ function useFileBrowser() {
     isLoading,
     isFirstLoad,
     pathForName,
+    urlForName,
     navigate,
   };
 }
