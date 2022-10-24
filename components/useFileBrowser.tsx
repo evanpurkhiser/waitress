@@ -148,6 +148,7 @@ function useFileBrowser() {
     return () => window.removeEventListener('popstate', handlePathUpdate);
   }, [handlePathUpdate]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => void handlePathUpdate(), []);
 
   // If our targetItem is shallow render our lastPath until our tree has been

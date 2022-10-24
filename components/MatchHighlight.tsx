@@ -68,7 +68,7 @@ const MatchHighlight = ({match}: Props) => (
   <Fragment>
     {getFuseMatches(match).map(({highlight, text}, index) => {
       if (!text) {
-        return <Fragment />;
+        return <Fragment key={`blank-${index}`} />;
       }
       if (highlight) {
         return <Marker key={index}>{text}</Marker>;

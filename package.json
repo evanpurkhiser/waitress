@@ -47,6 +47,7 @@
     "webpack-dev-server": "^4.10.0"
   },
   "scripts": {
+    "lint": "eslint components/ *.ts*",
     "build": "webpack --mode=production",
     "server": "webpack serve --hot --mode=development"
   },
