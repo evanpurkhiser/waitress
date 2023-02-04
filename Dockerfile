@@ -26,4 +26,4 @@ EXPOSE 80
 ENV DATA_PATH /data
 VOLUME /data
 
-CMD ["sh", "-c", "exec ./waitress -root $DATA_PATH -port 80"]
+CMD ["exec", "./waitress", "-root=$DATA_PATH", "-port 80"]
