@@ -21,9 +21,10 @@ RUN PATH=$PATH:$HOME/go/bin make
 
 FROM debian:stable-slim
 COPY --from=builder dist/waitress .
+COPY --from=builder dockerStart.sh .
 
 EXPOSE 80
 ENV DATA_PATH /data
 VOLUME /data
 
-CMD ["sh", "-c", "exec ./waitress -root $DATA_PATH -port 80"]
+ENTRYPOINT ./dockerStart.sh
