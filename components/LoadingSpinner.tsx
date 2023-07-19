@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
-type Props = {
+interface Props {
   size: number;
-};
+}
 
 const LoadingSpinner = styled('div')<Props>`
   @keyframes loader {
@@ -23,7 +23,9 @@ const LoadingSpinner = styled('div')<Props>`
     }
   }
 
-  animation: loader 500ms infinite linear, delayedShow 500ms 200ms forwards;
+  animation:
+    loader 500ms infinite linear,
+    delayedShow 500ms 200ms forwards;
 
   height: ${p => p.size}px;
   width: ${p => p.size}px;

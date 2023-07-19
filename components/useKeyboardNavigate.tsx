@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 
-type Props<T> = {
+interface Props<T> {
   /**
    * The list of values to navigate through
    */
@@ -13,7 +13,7 @@ type Props<T> = {
    * Callback triggered when escape is pressed
    */
   onEscape: (e: KeyboardEvent) => void;
-};
+}
 
 /**
  * Navigate a list of items using the up/down arrow and ^j/^k keys

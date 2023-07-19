@@ -13,11 +13,11 @@ const FILETYPE_ALIASES: Record<string, string> = {
 const fileIcons = require.context('../icons', true, /.*\.svg/);
 const fileTypes = fileIcons.keys().map(t => t.slice(2, -4));
 
-type Props = {
+interface Props {
   className?: string;
   isDir: boolean;
   path: string;
-};
+}
 
 const FileIcon = styled((p: Props) => {
   let type = !p.isDir

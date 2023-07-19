@@ -1,4 +1,4 @@
-export type TreeNode = {
+export interface TreeNode {
   /**
    * Size of the node
    */
@@ -19,4 +19,4 @@ export type TreeNode = {
    * Is the tree a 'shallow' tree, eg not all nodes have children
    */
   shallow: boolean;
-};
+}

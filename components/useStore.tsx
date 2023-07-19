@@ -1,10 +1,10 @@
 import create from 'zustand';
 import shallow from 'zustand/shallow';
 
-type Store = {
+interface Store {
   filter: string;
   setFilter: (value: string) => void;
-};
+}
 
 const useStore = create<Store>()(set => ({
   filter: '',

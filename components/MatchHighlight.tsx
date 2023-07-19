@@ -4,10 +4,10 @@ import type Fuse from 'fuse.js';
 
 type Match = Fuse.FuseResultMatch;
 
-type HighlightResult = {
+interface HighlightResult {
   highlight: boolean;
   text: string;
-};
+}
 
 type MatchResult = HighlightResult[];
 
@@ -56,9 +56,9 @@ const getFuseMatches = ({value, indices}: Match): MatchResult => {
   return result;
 };
 
-type Props = {
+interface Props {
   match: Match;
-};
+}
 
 /**
  * Given a match object from fuse.js, returns an array of components with

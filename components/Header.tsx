@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import Filter from './Filter';
 import LoadingSpinner from './LoadingSpinner';
 
-type Props = {
+interface Props {
   className?: string;
   title: string;
   isLoading?: boolean;
   onTitleClick: React.HTMLProps<HTMLHeadingElement>['onClick'];
-};
+}
 
 const Header = styled((p: Props) => (
   <header className={p.className}>

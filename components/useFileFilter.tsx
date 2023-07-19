@@ -3,12 +3,12 @@ import Fuse from 'fuse.js';
 
 import {useFilter} from './useStore';
 
-type Props = {
+interface Props {
   /**
    * The list of files to filter
    */
   files: string[];
-};
+}
 
 const FUSE_OPTIONS: Fuse.IFuseOptions<string> = {
   useExtendedSearch: true,

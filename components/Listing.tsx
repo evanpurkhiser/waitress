@@ -1,9 +1,9 @@
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 
-type ListingProps = {
+interface ListingProps {
   disabled?: boolean;
-};
+}
 
 const getDisabled = (p: ListingProps) =>
   p.disabled &&
@@ -27,10 +27,10 @@ export const Divider = styled('hr')`
   margin: 10px 0;
 `;
 
-type EmptyProps = {
+interface EmptyProps {
   className?: string;
   folder?: string;
-};
+}
 
 export const EmptyListing = styled((p: EmptyProps) => (
   <div className={p.className}>Nothing in {p.folder}</div>
@@ -46,13 +46,13 @@ export const EmptyListing = styled((p: EmptyProps) => (
   margin: -10px 0 10px;
 `;
 
-type ItemProps = {
+interface ItemProps {
   className?: string;
   path?: string;
   focused?: boolean;
   onClick?: React.HTMLProps<HTMLAnchorElement>['onClick'];
   children?: React.ReactNode;
-};
+}
 
 function scrollToFocus(el: HTMLLIElement | null) {
   el?.scrollIntoView({block: 'center'});
