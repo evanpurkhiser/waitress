@@ -84,4 +84,4 @@ const Marker = styled('mark')`
   box-shadow: 0px 1px 0 #f23978;
 `;
 
-export default MatchHighlight;
+export {MatchHighlight};

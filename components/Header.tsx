@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
-import Filter from './Filter';
-import LoadingSpinner from './LoadingSpinner';
+import {Filter} from './Filter';
+import {LoadingSpinner} from './LoadingSpinner';
 
 interface Props {
   className?: string;
@@ -31,4 +31,4 @@ const Header = styled((p: Props) => (
   }
 `;
 
-export default Header;
+export {Header};

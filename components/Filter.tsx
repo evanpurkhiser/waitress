@@ -80,7 +80,7 @@ function Filter() {
   );
 }
 
-export default Filter;
+export {Filter};
 
 const SearchInput = styled('input')`
   padding: 4px 0;

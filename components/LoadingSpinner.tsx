@@ -36,4 +36,4 @@ const LoadingSpinner = styled('div')<Props>`
   opacity: 0;
 `;
 
-export default LoadingSpinner;
+export {LoadingSpinner};

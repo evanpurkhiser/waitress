@@ -48,4 +48,4 @@ function useFileFilter({files}: Props) {
   return {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap};
 }
 
-export default useFileFilter;
+export {useFileFilter};

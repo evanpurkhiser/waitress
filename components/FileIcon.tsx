@@ -39,4 +39,4 @@ const FileIcon = styled((p: Props) => {
   margin-right: 6px;
 `;
 
-export default FileIcon;
+export {FileIcon};

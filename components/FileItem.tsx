@@ -3,9 +3,9 @@ import type Fuse from 'fuse.js';
 import prettyBytes from 'pretty-bytes';
 
 import {FileName, FileSize} from './Attributes';
-import FileIcon from './FileIcon';
+import {FileIcon} from './FileIcon';
 import {ListingItem} from './Listing';
-import MatchHighlight from './MatchHighlight';
+import {MatchHighlight} from './MatchHighlight';
 import {TreeNode} from './types';
 
 type FileProps = TreeNode & {
@@ -24,4 +24,4 @@ const FileItem = memo(({path, onClick, focused, match, isDir, name, size}: FileP
   </ListingItem>
 ));
 
-export default FileItem;
+export {FileItem};

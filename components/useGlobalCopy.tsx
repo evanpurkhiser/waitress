@@ -30,4 +30,4 @@ function useGlobalCopy(value: string) {
   }, [handleKeydown]);
 }
 
-export default useGlobalCopy;
+export {useGlobalCopy};

@@ -212,4 +212,4 @@ function useFileBrowser() {
   };
 }
 
-export default useFileBrowser;
+export {useFileBrowser};

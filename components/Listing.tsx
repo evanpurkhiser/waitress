@@ -14,7 +14,7 @@ const getDisabled = (p: ListingProps) =>
     user-select: none;
   `;
 
-export const Listing = styled('ul')<ListingProps>`
+const Listing = styled('ul')<ListingProps>`
   margin: 10px 0;
   padding: 0 2px;
   list-style: none;
@@ -22,7 +22,7 @@ export const Listing = styled('ul')<ListingProps>`
   ${getDisabled};
 `;
 
-export const Divider = styled('hr')`
+const Divider = styled('hr')`
   border: none;
   margin: 10px 0;
 `;
@@ -32,7 +32,7 @@ interface EmptyProps {
   folder?: string;
 }
 
-export const EmptyListing = styled((p: EmptyProps) => (
+const EmptyListing = styled((p: EmptyProps) => (
   <div className={p.className}>Nothing in {p.folder}</div>
 ))`
   flex-grow: 1;
@@ -58,7 +58,7 @@ function scrollToFocus(el: HTMLLIElement | null) {
   el?.scrollIntoView({block: 'center'});
 }
 
-export const ListingItem = styled((p: ItemProps) => (
+const ListingItem = styled((p: ItemProps) => (
   <li className={p.className} ref={p.focused ? scrollToFocus : undefined}>
     <a href={p.path} onClick={p.onClick}>
       {p.children}
@@ -85,3 +85,5 @@ export const ListingItem = styled((p: ItemProps) => (
     color: #595e73;
   }
 `;
+
+export {Divider, EmptyListing, Listing, ListingItem};

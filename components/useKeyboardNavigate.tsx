@@ -97,4 +97,4 @@ function useKeyboardNavigate<T>({list, onSelect, onEscape}: Props<T>) {
   return {focused, setFocus};
 }
 
-export default useKeyboardNavigate;
+export {useKeyboardNavigate};
