@@ -45,7 +45,7 @@ function FileBrowser() {
   // Copy selected item URL or current directory URL
   useGlobalCopy(urlForName(focused ?? ''));
 
-  // Reset the filter when the file list chagnes
+  // Reset the filter when the file list changes
   useEffect(() => setFilter(''), [setFilter, files]);
 
   // Clear focus when the file list changes

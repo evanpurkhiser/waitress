@@ -23,7 +23,7 @@ type File struct {
 
 // BuildTree constructs a File at the rootPath, populates the nested File
 // and a single level of it's children at the target path as well as the parent
-// file (but none of it's children asside from the target path).
+// file (but none of it's children aside from the target path).
 func BuildTree(rootPath, path string) (*File, error) {
 	trimmedPath := filepath.Clean(separator + path)
 	paths := strings.Split(trimmedPath, separator)[1:]
