@@ -51,12 +51,12 @@ function useKeyboardNavigate<T>({list, onSelect, onEscape}: Props<T>) {
         e.ctrlKey && e.key === 'j'
           ? 'ArrowDown'
           : e.ctrlKey && e.key === 'k'
-          ? 'ArrowUp'
-          : e.ctrlKey && e.key === 'n'
-          ? 'ArrowDown'
-          : e.ctrlKey && e.key === 'p'
-          ? 'ArrowUp'
-          : e.key;
+            ? 'ArrowUp'
+            : e.ctrlKey && e.key === 'n'
+              ? 'ArrowDown'
+              : e.ctrlKey && e.key === 'p'
+                ? 'ArrowUp'
+                : e.key;
 
       // Does nothing for everything except arrow keys
       if (!['ArrowUp', 'ArrowDown'].includes(key)) {

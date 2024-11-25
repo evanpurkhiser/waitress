@@ -54,7 +54,7 @@ function FileBrowser() {
   // When we start typing focus the first item. When the filter becomes empty
   // clear the focus. Resets when the filtered file list changes
   useEffect(
-    () => setFocus(hasFilter ? matchedFiles[0] ?? null : null),
+    () => setFocus(hasFilter ? (matchedFiles[0] ?? null) : null),
     [setFocus, hasFilter, matchedFiles]
   );
 

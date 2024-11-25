@@ -21,7 +21,7 @@ interface Props {
 
 const FileIcon = styled((p: Props) => {
   let type = !p.isDir
-    ? (p.path.match(/.+\.(.*)$/) || [null, ''])?.[1]?.toLowerCase() ?? ''
+    ? ((p.path.match(/.+\.(.*)$/) || [null, ''])?.[1]?.toLowerCase() ?? '')
     : 'folder';
 
   type = FILETYPE_ALIASES[type] ?? type;
