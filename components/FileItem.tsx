@@ -1,5 +1,5 @@
 import {memo} from 'react';
-import type Fuse from 'fuse.js';
+import {FuseResultMatch} from 'fuse.js';
 import prettyBytes from 'pretty-bytes';
 
 import {FileName, FileSize} from './Attributes';
@@ -13,7 +13,7 @@ type FileProps = TreeNode & {
   name: string;
   focused: boolean;
   onClick: React.ComponentProps<typeof ListingItem>['onClick'];
-  match?: Fuse.FuseResultMatch;
+  match?: FuseResultMatch;
 };
 
 const FileItem = memo(({path, onClick, focused, match, isDir, name, size}: FileProps) => (

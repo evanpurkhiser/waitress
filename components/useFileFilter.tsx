@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import Fuse from 'fuse.js';
+import Fuse, {FuseResultMatch, IFuseOptions} from 'fuse.js';
 
 import {useFilter} from './useStore';
 
@@ -10,7 +10,7 @@ interface Props {
   files: string[];
 }
 
-const FUSE_OPTIONS: Fuse.IFuseOptions<string> = {
+const FUSE_OPTIONS: IFuseOptions<string> = {
   useExtendedSearch: true,
   includeMatches: true,
   minMatchCharLength: 2,
@@ -43,7 +43,7 @@ function useFileFilter({files}: Props) {
   const matchMap = useMemo(
     () => Object.fromEntries(filterResult?.map(r => [r.item, r.matches?.[0]]) ?? []),
     [filterResult]
-  ) as Record<string, Fuse.FuseResultMatch | undefined>;
+  ) as Record<string, FuseResultMatch | undefined>;
 
   return {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap};
 }

@@ -1,8 +1,8 @@
 import {Fragment} from 'react';
 import styled from '@emotion/styled';
-import type Fuse from 'fuse.js';
+import {FuseResultMatch} from 'fuse.js';
 
-type Match = Fuse.FuseResultMatch;
+type Match = FuseResultMatch;
 
 interface HighlightResult {
   highlight: boolean;
