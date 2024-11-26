@@ -32,4 +32,4 @@ const app = (
   </Fragment>
 );
 
-createRoot(document.getElementById('container')).render(app);
+createRoot(document.getElementById('container')!).render(app);
