@@ -9,7 +9,6 @@ const FILETYPE_ALIASES: Record<string, string> = {
 };
 
 // Create svg file icon require context
-// eslint-disable-next-line no-undef
 const fileIcons = require.context('../icons', true, /.*\.svg/);
 const fileTypes = fileIcons.keys().map(t => t.slice(2, -4));
 

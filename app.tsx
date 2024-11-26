@@ -8,7 +8,7 @@ import {FileBrowser} from './components/FileBrowser';
 
 Sentry.init({
   dsn: 'https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756',
-  environment: process.env.NODE_ENV, // eslint-disable-line no-undef
+  environment: process.env.NODE_ENV,
   integrations: [new Integrations.BrowserTracing()],
   tracesSampleRate: 1.0,
 });
