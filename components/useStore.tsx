@@ -1,5 +1,5 @@
-import create from 'zustand';
-import shallow from 'zustand/shallow';
+import {create} from 'zustand';
+import {useShallow} from 'zustand/shallow';
 
 interface Store {
   filter: string;
@@ -16,7 +16,7 @@ function reduceFilterState(state: Store) {
 }
 
 function useFilter() {
-  return useStore(reduceFilterState, shallow);
+  return useStore(useShallow(reduceFilterState));
 }
 
 export {useFilter, useStore};
