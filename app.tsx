@@ -2,14 +2,13 @@ import {Fragment} from 'react';
 import {createRoot} from 'react-dom/client';
 import {css, Global} from '@emotion/react';
 import * as Sentry from '@sentry/react';
-import {Integrations} from '@sentry/tracing';
 
 import {FileBrowser} from './components/FileBrowser';
 
 Sentry.init({
   dsn: 'https://2afa25599321471fbc5dd9610bd74804@sentry.io/1256756',
   environment: process.env.NODE_ENV,
-  integrations: [new Integrations.BrowserTracing()],
+  integrations: [Sentry.browserTracingIntegration()],
   tracesSampleRate: 1.0,
 });
 
