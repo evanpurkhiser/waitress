@@ -19,7 +19,6 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/svg-sprite-loader": "^3.9.5",
-    "@types/webpack-bundle-analyzer": "^4.6.0",
     "@types/webpack-env": "^1.18.0",
     "babel-loader": "^8.2.5",
     "file-loader": "^6.1.0",
@@ -36,7 +35,6 @@
     "typescript": "^5.7.2",
     "typescript-styled-plugin": "^0.18.2",
     "webpack": "^5.74.0",
-    "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",
     "zustand": "^5.0.1"
   },
