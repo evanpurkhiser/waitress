@@ -1,16 +1,17 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
 	"path"
 
-	"github.com/GeertJohan/go.rice"
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/gorilla/mux"
@@ -34,10 +35,21 @@ func handleServeTree(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(tree)
 }
 
+//go:embed dist/_static/*
+var statics embed.FS
+
+func getStaticsFs() http.FileSystem {
+	staticsFs, _ := fs.Sub(statics, "dist/_static")
+
+	if _, err := staticsFs.Open("index.html"); err != nil {
+		return nil
+	}
+	return http.FS(staticsFs)
+}
+
 func getStaticHandler() http.Handler {
-	box, _ := rice.FindBox("dist/_static")
-	if box != nil {
-		return http.StripPrefix("/_static", http.FileServer(box.HTTPBox()))
+	if staticsFs := getStaticsFs(); staticsFs != nil {
+		return http.StripPrefix("/_static", http.FileServer(staticsFs))
 	}
 
 	// Proxy to the development webpack server if no box is attached
@@ -103,7 +115,7 @@ func buildRoutes() *mux.Router {
 func setupSentry() {
 	var env string
 
-	if _, err := rice.FindBox("dist/_static"); err != nil {
+	if fs := getStaticsFs(); fs == nil {
 		env = "development"
 	} else {
 		env = "production"
