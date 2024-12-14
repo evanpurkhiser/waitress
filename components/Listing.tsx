@@ -40,9 +40,9 @@ const EmptyListing = styled((p: EmptyProps) => (
   height: 120px;
   align-items: center;
   justify-content: center;
-  color: #bbb;
+  color: var(--textEmpty);
   border-radius: 12px;
-  border: 2px dashed #eee;
+  border: 2px dashed var(--borderEmpty);
   margin: -10px 0 10px;
 `;
 
@@ -69,11 +69,11 @@ const ListingItem = styled((p: ItemProps) => (
   border-radius: 3px;
   cursor: pointer;
 
-  ${p => p.focused && 'background: #fafafa'};
+  ${p => p.focused && 'background: var(--focusBackground)'};
   scroll-padding: 20px;
 
   &:hover {
-    background: #fafafa;
+    background: var(--focusBackground);
   }
 
   a {
@@ -82,7 +82,7 @@ const ListingItem = styled((p: ItemProps) => (
     display: flex;
     flex-direction: row;
     text-decoration: none;
-    color: #595e73;
+    color: var(--text);
   }
 `;
 

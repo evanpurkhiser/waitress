@@ -85,12 +85,13 @@ export {Filter};
 const SearchInput = styled('input')`
   padding: 4px 0;
   margin: -4px 0;
+  background: none;
   border: none;
   outline: none;
   font-family: Ubuntu, sans-serif;
   font-size: 1rem;
-  color: #97979c;
-  caret-color: #97979c;
+  color: var(--textSearch);
+  caret-color: var(--textSearch);
   cursor: default;
   pointer-events: none;
 

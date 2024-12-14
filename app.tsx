@@ -13,13 +13,40 @@ Sentry.init({
 });
 
 const globalStyles = css`
+  :root {
+    --background: #ffffff;
+    --text: #595e73;
+    --textSearch: #97979c;
+    --textAttribute: #888888;
+    --textEmpty: #bbbbbb;
+    --borderEmpty: #eeeeee;
+    --focusBackground: #fafafa;
+
+    --matchbackground: #ffb9d1;
+    --matchUnderline: #f23978;
+
+    @media (prefers-color-scheme: dark) {
+      --background: #0f0f0f;
+      --text: #efefef;
+      --textEmpty: #444444;
+      --textSearch: #97979c;
+      --textAttribute: #888888;
+      --borderEmpty: #222222;
+      --focusBackground: #1f1f1f;
+
+      --matchbackground: #8c0a31;
+      --matchUnderline: #f23978;
+    }
+  }
+
   * {
     box-sizing: border-box;
   }
 
   body {
     margin: 0;
-    color: #595e73;
+    color: var(--text);
+    background: var(--background);
     font-family: Ubuntu, sans-serif;
   }
 `;

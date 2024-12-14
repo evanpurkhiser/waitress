@@ -80,8 +80,9 @@ const MatchHighlight = ({match}: Props) => (
 );
 
 const Marker = styled('mark')`
-  background: #ffb9d1;
-  box-shadow: 0px 1px 0 #f23978;
+  color: var(--text);
+  background: var(--matchbackground);
+  box-shadow: 0px 1px 0 var(--matchUnderline);
 `;
 
 export {MatchHighlight};
