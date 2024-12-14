@@ -13,7 +13,7 @@
     "outDir": "./dist",
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "rootDir": "./components",
+    "rootDir": "./",
     "plugins": [
       {
         "name": "typescript-styled-plugin"
