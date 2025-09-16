@@ -4,11 +4,10 @@ on: [push]
 jobs:
   build:
     name: build
-    runs-on: ubuntu-latest
 
     permissions:
       packages: write
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: evanpurkhiser/workflows/docker.yml@main
+    uses: evanpurkhiser/workflows/docker.yml@main
+    with:
+      publish: ${{ github.ref == 'refs/heads/main' }}
