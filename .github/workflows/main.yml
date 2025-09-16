@@ -10,8 +10,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build
         run: docker build --tag=evanpurkhiser/waitress:latest .
+      - name: GHCR Authenticate
+        uses: docker/login-action@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          docker login --username=evanpurkhiser --password-stdin <<< "${{ secrets.DOCKER_HUB_TOKEN }}"
-          docker push evanpurkhiser/waitress:latest
+        run: docker push evanpurkhiser/waitress:latest
