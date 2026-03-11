@@ -22,6 +22,10 @@ import (
 var root = flag.String("root", ".", "The root file path to serve files from")
 var port = flag.Int("port", 8000, "The port to run the server on")
 
+func acceptsMarkdown(req *http.Request) bool {
+	return strings.Contains(req.Header.Get("Accept"), "text/markdown")
+}
+
 func handleServeTree(w http.ResponseWriter, req *http.Request) {
 	tree, err := BuildTree(*root, req.URL.Path)
 	if err != nil && os.IsNotExist(err) {
@@ -33,9 +37,7 @@ func handleServeTree(w http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	// Check if client accepts markdown
-	acceptHeader := req.Header.Get("Accept")
-	if strings.Contains(acceptHeader, "text/markdown") {
+	if acceptsMarkdown(req) {
 		markdown := treeToMarkdown(tree, req.URL.Path)
 		w.Header().Set("Content-Type", "text/markdown; charset=utf-8")
 		w.Write([]byte(markdown))
@@ -49,23 +51,33 @@ func handleServeTree(w http.ResponseWriter, req *http.Request) {
 func treeToMarkdown(tree *File, urlPath string) string {
 	var sb strings.Builder
 
-	// Add header with path
+	cleanPath := strings.TrimSuffix(urlPath, "/")
+	if cleanPath == "" {
+		cleanPath = "/"
+	}
+
 	if urlPath == "/" || urlPath == "" {
 		sb.WriteString("# Files\n\n")
 	} else {
 		sb.WriteString(fmt.Sprintf("# Files in %s\n\n", urlPath))
 	}
 
-	// Add navigation instructions
-	sb.WriteString("Use this markdown view to see all available files and directories.\n")
-	sb.WriteString("Download individual files by requesting them directly, or navigate to subdirectories.\n\n")
+	sb.WriteString("## Navigation\n\n")
+	sb.WriteString(fmt.Sprintf("- [JSON tree view](/_tree%s)\n", urlPath))
+	if urlPath != "/" && urlPath != "" {
+		parent := path.Dir(urlPath)
+		if parent == "." {
+			parent = "/"
+		}
+		sb.WriteString(fmt.Sprintf("- [Parent directory](%s)\n\n", parent))
+	} else {
+		sb.WriteString("\n")
+	}
 
-	// Find the actual directory to list
 	var currentFile *File
 	if urlPath == "/" || urlPath == "" {
 		currentFile = tree
 	} else {
-		// Navigate to the target file in the tree
 		currentFile = findFileInTree(tree, urlPath)
 	}
 
@@ -73,13 +85,11 @@ func treeToMarkdown(tree *File, urlPath string) string {
 		return "Not a directory\n"
 	}
 
-	// List files and directories
 	if len(currentFile.Children) == 0 {
 		sb.WriteString("*Empty directory*\n")
 		return sb.String()
 	}
 
-	// Separate directories and files
 	var dirs []string
 	var files []string
 
@@ -94,24 +104,25 @@ func treeToMarkdown(tree *File, urlPath string) string {
 	sort.Strings(dirs)
 	sort.Strings(files)
 
-	// List directories first
+	metadata := fmt.Sprintf("{\"path\": %q, \"dirs\": %d, \"files\": %d}", urlPath, len(dirs), len(files))
+	sb.WriteString(fmt.Sprintf("<!-- METADATA: %s -->\n\n", metadata))
+
 	if len(dirs) > 0 {
 		sb.WriteString("## Directories\n\n")
 		for _, name := range dirs {
-			cleanPath := strings.TrimSuffix(urlPath, "/")
-			sb.WriteString(fmt.Sprintf("- 📁 **%s/** - [view](%s/%s/)\n", name, cleanPath, name))
+			linkPath := path.Join(cleanPath, name) + "/"
+			sb.WriteString(fmt.Sprintf("- **[DIR]** %s/ - [view](%s)\n", name, linkPath))
 		}
 		sb.WriteString("\n")
 	}
 
-	// List files
 	if len(files) > 0 {
 		sb.WriteString("## Files\n\n")
 		for _, name := range files {
 			file := currentFile.Children[name]
-			cleanPath := strings.TrimSuffix(urlPath, "/")
-			sb.WriteString(fmt.Sprintf("- 📄 **%s** (%s) - [download](%s/%s)\n",
-				name, formatSize(file.Size), cleanPath, name))
+			linkPath := path.Join(cleanPath, name)
+			sb.WriteString(fmt.Sprintf("- **[FILE]** %s (%s) - [download](%s)\n",
+				name, formatSize(file.Size), linkPath))
 		}
 	}
 
@@ -183,11 +194,13 @@ func handleServeFile(w http.ResponseWriter, r *http.Request) bool {
 	if os.IsNotExist(err) {
 		return false
 	}
+	if err != nil {
+		panic(err)
+	}
 
 	// If it's a directory and markdown is accepted, handle as tree
 	if file.IsDir() {
-		acceptHeader := r.Header.Get("Accept")
-		if strings.Contains(acceptHeader, "text/markdown") {
+		if acceptsMarkdown(r) {
 			handleServeTree(w, r)
 			return true
 		}
