@@ -60,7 +60,7 @@ function Filter() {
 
       inputRef.current.focus();
     },
-    [setFilter]
+    [setFilter],
   );
 
   useEffect(() => {

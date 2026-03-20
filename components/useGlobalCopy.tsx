@@ -21,7 +21,7 @@ function useGlobalCopy(value: string) {
       e.preventDefault();
       navigator.clipboard.writeText(value);
     },
-    [value]
+    [value],
   );
 
   useEffect(() => {

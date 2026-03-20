@@ -55,16 +55,16 @@ function FileBrowser() {
   // clear the focus. Resets when the filtered file list changes
   useEffect(
     () => setFocus(hasFilter ? (matchedFiles[0] ?? null) : null),
-    [setFocus, hasFilter, matchedFiles]
+    [setFocus, hasFilter, matchedFiles],
   );
 
   // momoize click handlers to avoid re-renders of File nodes
   const clickHandlers = useMemo(
     () =>
       Object.fromEntries(
-        files.map(k => [k, (e: React.MouseEvent) => navigate.toItem(k, e)])
+        files.map(k => [k, (e: React.MouseEvent) => navigate.toItem(k, e)]),
       ),
-    [files, navigate]
+    [files, navigate],
   );
 
   const makeFileNode = useCallback(
@@ -79,7 +79,7 @@ function FileBrowser() {
         onClick={clickHandlers[k]}
       />
     ),
-    [node, pathForName, focused, matchMap, clickHandlers]
+    [node, pathForName, focused, matchMap, clickHandlers],
   );
 
   const navigateHome = useCallback(() => navigate.toPath([]), [navigate]);

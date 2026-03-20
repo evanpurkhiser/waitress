@@ -27,22 +27,22 @@ function useFileFilter({files}: Props) {
 
   const matchedFiles = useMemo(
     () => filterResult?.map(r => r.item) ?? [],
-    [filterResult]
+    [filterResult],
   );
 
   const unmatchedFiles = useMemo(
     () => files.filter(f => !matchedFiles.includes(f)),
-    [files, matchedFiles]
+    [files, matchedFiles],
   );
 
   const allFiles = useMemo(
     () => [...matchedFiles, ...unmatchedFiles],
-    [matchedFiles, unmatchedFiles]
+    [matchedFiles, unmatchedFiles],
   );
 
   const matchMap = useMemo(
     () => Object.fromEntries(filterResult?.map(r => [r.item, r.matches?.[0]]) ?? []),
-    [filterResult]
+    [filterResult],
   ) as Record<string, FuseResultMatch | undefined>;
 
   return {setFilter, matchedFiles, unmatchedFiles, allFiles, matchMap};

@@ -23,12 +23,12 @@ function useKeyboardNavigate<T>({list, onSelect, onEscape}: Props<T>) {
 
   const setFocusIndex = useCallback(
     (index: number) => setFocus(list[index] ?? null),
-    [list]
+    [list],
   );
 
   const focusedIndex = useMemo(
     () => (focused === null ? -1 : list.indexOf(focused)),
-    [focused, list]
+    [focused, list],
   );
 
   const handleNavigate = useCallback(
@@ -86,7 +86,7 @@ function useKeyboardNavigate<T>({list, onSelect, onEscape}: Props<T>) {
       // Reverse wraparound to the end
       setFocusIndex(newIndex >= 0 ? newIndex : endIndex);
     },
-    [setFocusIndex, focusedIndex, focused, list.length, onSelect, onEscape]
+    [setFocusIndex, focusedIndex, focused, list.length, onSelect, onEscape],
   );
 
   useEffect(() => {

@@ -124,7 +124,7 @@ function useFileBrowser() {
 
       window.scrollTo(0, 0);
     },
-    [handlePathUpdate, tree]
+    [handlePathUpdate, tree],
   );
 
   /**
@@ -132,7 +132,7 @@ function useFileBrowser() {
    */
   const navigateToItem = useCallback(
     (target: string, e?: Event | React.UIEvent) => navigateToPath([...path, target], e),
-    [navigateToPath, path]
+    [navigateToPath, path],
   );
 
   /**
@@ -140,7 +140,7 @@ function useFileBrowser() {
    */
   const navigateToParent = useCallback(
     (e?: Event | React.UIEvent) => navigateToPath(path.slice(0, -1), e),
-    [navigateToPath, path]
+    [navigateToPath, path],
   );
 
   useEffect(() => {
@@ -159,7 +159,7 @@ function useFileBrowser() {
 
   const node = useMemo(
     () => (isTransitioning ? locate(tree, lastPath) : targetItem),
-    [tree, lastPath, isTransitioning, targetItem]
+    [tree, lastPath, isTransitioning, targetItem],
   );
 
   const files = useMemo(
@@ -172,12 +172,12 @@ function useFileBrowser() {
 
         return c.isDir === d.isDir ? a.localeCompare(b, 'en', {numeric: true}) : dirSort;
       }),
-    [node.children]
+    [node.children],
   );
 
   const pathForName = useCallback(
     (name: string) => makeAbsolutePath([...path, name]),
-    [path]
+    [path],
   );
 
   const urlForName = useCallback(
@@ -187,7 +187,7 @@ function useFileBrowser() {
 
       return url.toString();
     },
-    [path]
+    [path],
   );
 
   const navigate = useMemo(
@@ -196,7 +196,7 @@ function useFileBrowser() {
       toItem: navigateToItem,
       toParent: navigateToParent,
     }),
-    [navigateToPath, navigateToItem, navigateToParent]
+    [navigateToPath, navigateToItem, navigateToParent],
   );
 
   return {
