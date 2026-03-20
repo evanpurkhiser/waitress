@@ -1,9 +1,12 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import SpriteLoaderPlugin from 'svg-sprite-loader/plugin';
+import SpriteLoaderPlugin from 'svg-sprite-loader/plugin.js';
 import * as webpack from 'webpack';
 
 import path from 'path';
+import {fileURLToPath} from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const IS_PROD = process.argv.find(a => a.includes('mode=production'));
 
