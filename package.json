@@ -5,7 +5,9 @@
   "license": "MIT",
   "author": "Evan Purkhiser",
   "scripts": {
-    "lint": "eslint components/ *.ts*",
+    "lint": "oxlint components/ *.ts*",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
     "build": "webpack --mode=production",
     "server": "webpack serve --hot --mode=development"
   },
@@ -44,10 +46,9 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@evanpurkhiser/eslint-config": "^0.25.0",
-    "@evanpurkhiser/oxc-config": "^0.4.0",
-    "eslint": "^9.17.0",
+    "@evanpurkhiser/oxc-config": "^0.5.0",
     "oxfmt": "^0.41.0",
+    "oxlint": "^1.56.0",
     "webpack-dev-server": "^5.2.0"
   },
   "browserslist": [
