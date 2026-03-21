@@ -1084,6 +1084,13 @@
     globals "^15.12.0"
     typescript-eslint "^8.16.0"
 
+"@evanpurkhiser/oxc-config@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@evanpurkhiser/oxc-config/-/oxc-config-0.4.0.tgz#26166ad3558d343905ea2b3cc03942ca164070f3"
+  integrity sha512-taIsXcwyl97OaiIGbmEvTWZ/6KK0XlkHY4toedbIJXOm1yapvJIOWKhxDEysCC1Z9vNTI50w1KeqvcXmEoURCg==
+  dependencies:
+    eslint-plugin-simple-import-sort "^12.1.1"
+
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"

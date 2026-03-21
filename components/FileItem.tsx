@@ -1,4 +1,5 @@
 import {memo} from 'react';
+
 import {FuseResultMatch} from 'fuse.js';
 import prettyBytes from 'pretty-bytes';
 

@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@evanpurkhiser/eslint-config": "^0.25.0",
+    "@evanpurkhiser/oxc-config": "^0.4.0",
     "eslint": "^9.17.0",
     "oxfmt": "^0.41.0",
     "webpack-dev-server": "^5.2.0"

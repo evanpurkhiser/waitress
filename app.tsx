@@ -1,7 +1,8 @@
 import {Fragment} from 'react';
-import {createRoot} from 'react-dom/client';
+
 import {css, Global} from '@emotion/react';
 import * as Sentry from '@sentry/react';
+import {createRoot} from 'react-dom/client';
 
 import {FileBrowser} from './components/FileBrowser';
 import {colors} from './theme';

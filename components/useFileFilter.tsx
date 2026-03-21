@@ -1,4 +1,5 @@
 import {useMemo} from 'react';
+
 import Fuse, {FuseResultMatch, IFuseOptions} from 'fuse.js';
 
 import {useFilter} from './useStore';
