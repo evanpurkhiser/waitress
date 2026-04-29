@@ -4,9 +4,6 @@ import SpriteLoaderPlugin from 'svg-sprite-loader/plugin.js';
 import type * as webpack from 'webpack';
 
 import path from 'node:path';
-import {fileURLToPath} from 'node:url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const IS_PROD = process.argv.find(a => a.includes('mode=production'));
 
