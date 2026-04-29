@@ -30,10 +30,10 @@ const globalStyles = css`
 `;
 
 const app = (
-  <Fragment>
+  <>
     <Global styles={globalStyles} />
     <FileBrowser />
-  </Fragment>
+  </>
 );
 
 createRoot(document.getElementById('container')!).render(app);

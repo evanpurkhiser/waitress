@@ -1,7 +1,7 @@
 import {Fragment} from 'react';
 
 import styled from '@emotion/styled';
-import {FuseResultMatch} from 'fuse.js';
+import type {FuseResultMatch} from 'fuse.js';
 
 type Match = FuseResultMatch;
 
@@ -66,7 +66,7 @@ interface Props {
  * "highlighted" (bold) substrings.
  */
 const MatchHighlight = ({match}: Props) => (
-  <Fragment>
+  <>
     {getFuseMatches(match).map(({highlight, text}, index) => {
       if (!text) {
         return <Fragment key={`blank-${index}`} />;
@@ -77,7 +77,7 @@ const MatchHighlight = ({match}: Props) => (
 
       return <span key={index}>{text}</span>;
     })}
-  </Fragment>
+  </>
 );
 
 const Marker = styled('mark')`

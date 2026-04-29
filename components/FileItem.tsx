@@ -1,13 +1,13 @@
 import {memo} from 'react';
 
-import {FuseResultMatch} from 'fuse.js';
+import type {FuseResultMatch} from 'fuse.js';
 import prettyBytes from 'pretty-bytes';
 
 import {FileName, FileSize} from './Attributes';
 import {FileIcon} from './FileIcon';
 import {ListingItem} from './Listing';
 import {MatchHighlight} from './MatchHighlight';
-import {TreeNode} from './types';
+import type {TreeNode} from './types';
 
 type FileProps = TreeNode & {
   path: string;

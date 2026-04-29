@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
-import {TreeNode} from './types';
+import type {TreeNode} from './types';
 
 /**
  * Transform a path list to a absolute path
