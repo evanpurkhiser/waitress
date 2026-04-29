@@ -11,13 +11,8 @@ RUN apt-get update \
 
 COPY . .
 
-SHELL ["/bin/bash", "-c"]
-
-ENV VOLTA_HOME=/root/.volta
-ENV PATH=$VOLTA_HOME/bin:$PATH
-RUN curl https://get.volta.sh | bash
-RUN volta install node@24.0.0
-RUN volta install pnpm@10.15.1
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+ENV PATH="/root/.local/share/pnpm:$PATH"
 
 RUN PATH=$PATH:$HOME/go/bin make
 
