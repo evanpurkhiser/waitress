@@ -1,5 +1,3 @@
-import {Fragment} from 'react';
-
 import {css, Global} from '@emotion/react';
 import * as Sentry from '@sentry/react';
 import {createRoot} from 'react-dom/client';

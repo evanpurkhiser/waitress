@@ -7,6 +7,7 @@ type Match = FuseResultMatch;
 
 interface HighlightResult {
   highlight: boolean;
+  start: number;
   text: string;
 }
 
@@ -18,7 +19,7 @@ const getFuseMatches = ({value, indices}: Match): MatchResult => {
   }
 
   if (indices.length === 0) {
-    return [{highlight: false, text: value}];
+    return [{highlight: false, start: 0, text: value}];
   }
 
   const strLength = value.length;
@@ -27,20 +28,22 @@ const getFuseMatches = ({value, indices}: Match): MatchResult => {
 
   indices.forEach(([start, end]) => {
     // Unhighlighted string before the match
-    const stringBeforeMatch = value.substring(prev[1] + 1, start);
+    const stringBeforeMatch = value.slice(prev[1] + 1, start);
 
     // Only add to result if non-empty string
     if (stringBeforeMatch) {
       result.push({
         highlight: false,
+        start: prev[1] + 1,
         text: stringBeforeMatch,
       });
     }
 
     // This is the matched string, which should be highlighted
-    const matchedString = value.substring(start, end + 1);
+    const matchedString = value.slice(start, end + 1);
     result.push({
       highlight: true,
+      start,
       text: matchedString,
     });
 
@@ -48,10 +51,10 @@ const getFuseMatches = ({value, indices}: Match): MatchResult => {
   });
 
   // The rest of the string starting from the last match index
-  const restOfString = value.substring(prev[1] + 1, strLength);
+  const restOfString = value.slice(prev[1] + 1, strLength);
   // Only add to result if non-empty string
   if (restOfString) {
-    result.push({highlight: false, text: restOfString});
+    result.push({highlight: false, start: prev[1] + 1, text: restOfString});
   }
 
   return result;
@@ -67,15 +70,15 @@ interface Props {
  */
 const MatchHighlight = ({match}: Props) => (
   <>
-    {getFuseMatches(match).map(({highlight, text}, index) => {
+    {getFuseMatches(match).map(({highlight, start, text}) => {
       if (!text) {
-        return <Fragment key={`blank-${index}`} />;
+        return <Fragment key={`blank-${start}`} />;
       }
       if (highlight) {
-        return <Marker key={index}>{text}</Marker>;
+        return <Marker key={start}>{text}</Marker>;
       }
 
-      return <span key={index}>{text}</span>;
+      return <span key={start}>{text}</span>;
     })}
   </>
 );
