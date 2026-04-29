@@ -1,11 +1,11 @@
 .PHONY: build clean deps
 
 build: clean deps
-	yarn build
+	pnpm build
 	go build -mod=readonly -o dist/waitress *.go
 
 deps:
-	yarn install
+	pnpm install
 	go mod download
 
 clean:

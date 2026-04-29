@@ -4,6 +4,7 @@
   "description": "",
   "license": "MIT",
   "author": "Evan Purkhiser",
+  "packageManager": "pnpm@10.15.1",
   "scripts": {
     "lint": "oxlint components/ *.ts*",
     "format": "oxfmt .",
@@ -55,7 +56,6 @@
     "last 2 chrome versions"
   ],
   "volta": {
-    "node": "24.0.0",
-    "yarn": "1.22.22"
+    "node": "24.0.0"
   }
 }
