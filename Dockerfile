@@ -5,7 +5,6 @@ RUN apt-get update \
   curl \
   make \
   git \
-  golang \
   gnupg \
   libatomic1 \
   ca-certificates \
@@ -25,7 +24,7 @@ COPY . .
 
 RUN mise trust mise.toml && mise install
 
-RUN PATH=$PATH:$HOME/go/bin make
+RUN make
 
 FROM debian:stable-slim
 COPY --from=builder /app/dist/waitress .
