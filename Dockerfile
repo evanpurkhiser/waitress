@@ -7,6 +7,7 @@ RUN apt-get update \
   git \
   golang \
   gnupg \
+  libatomic1 \
   ca-certificates \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
