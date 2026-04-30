@@ -6,19 +6,29 @@ RUN apt-get update \
   make \
   git \
   golang \
+  gnupg \
   ca-certificates \
-  --no-install-recommends
+  --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/*
 
+ENV MISE_DATA_DIR=/mise
+ENV MISE_CONFIG_DIR=/mise
+ENV MISE_CACHE_DIR=/mise/cache
+ENV MISE_INSTALL_PATH=/usr/local/bin/mise
+ENV PATH=/mise/shims:$PATH
+
+RUN curl https://mise.run | sh
+
+WORKDIR /app
 COPY . .
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
-ENV PATH="/root/.local/share/pnpm:$PATH"
+RUN mise trust mise.toml && mise install
 
 RUN PATH=$PATH:$HOME/go/bin make
 
 FROM debian:stable-slim
-COPY --from=builder dist/waitress .
-COPY --from=builder dockerStart.sh .
+COPY --from=builder /app/dist/waitress .
+COPY --from=builder /app/dockerStart.sh .
 
 EXPOSE 80
 ENV DATA_PATH=/data
