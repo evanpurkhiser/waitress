@@ -4,16 +4,6 @@
   "description": "",
   "license": "MIT",
   "author": "Evan Purkhiser",
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^24.15.0"
-    },
-    "packageManager": {
-      "name": "pnpm",
-      "version": "11.0.0"
-    }
-  },
   "scripts": {
     "lint": "oxlint components/ *.ts*",
     "format": "oxfmt .",
@@ -63,5 +53,15 @@
   },
   "browserslist": [
     "last 2 chrome versions"
-  ]
+  ],
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.0.0"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "^24.15.0"
+    }
+  }
 }

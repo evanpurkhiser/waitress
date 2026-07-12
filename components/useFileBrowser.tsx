@@ -86,7 +86,7 @@ function useFileBrowser() {
 
     const node = locate(tree, newPath);
 
-    // If we navigated into a fully hydrated tree, we can immedaitely update
+    // If we navigated into a fully hydrated tree, we can immediately update
     // the last path
     if (!node.shallow) {
       setLastPath(newPath);
