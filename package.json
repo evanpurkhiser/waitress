@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "license": "MIT",
-  "author": "Evan Purkhiser",
+  "author": "Evan Purkhiser <waitress.js@evanpurkhiser.com>",
   "scripts": {
     "lint": "oxlint components/ *.ts*",
     "format": "oxfmt .",
