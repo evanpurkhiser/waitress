@@ -11,3 +11,13 @@ jobs:
     uses: evanpurkhiser/workflows/.github/workflows/docker.yml@main # zizmor: ignore[unpinned-uses]
     with:
       publish: ${{ github.ref == 'refs/heads/main' }}
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write
+    uses: evanpurkhiser/workflows/.github/workflows/deploy-image-personal.yml@main # zizmor: ignore[unpinned-uses]
+    with:
+      digest: ${{ needs.build.outputs.digest }}
