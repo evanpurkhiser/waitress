@@ -264,8 +264,8 @@ importers:
         version: 5.0.2(@types/react@19.0.1)(react@19.0.0)
     devDependencies:
       '@evanpurkhiser/oxc-config':
-        specifier: ^0.16.0
-        version: 0.16.0(oxlint@1.62.0)
+        specifier: ^0.20.0
+        version: 0.20.0(oxlint@1.62.0)
       oxfmt:
         specifier: ^0.47.0
         version: 0.47.0
@@ -899,8 +899,8 @@ packages:
   '@emotion/weak-memoize@0.4.0':
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
 
-  '@evanpurkhiser/oxc-config@0.16.0':
-    resolution: {integrity: sha512-FGJRko0Y/XvXrhSQLwRB3Cfd7tz6niEosLWUECtRtzCKojvRd9o4CprXfultUPab0/9PzKX2gEf+3X/IMZieTQ==}
+  '@evanpurkhiser/oxc-config@0.20.0':
+    resolution: {integrity: sha512-Kv3zwc8riKE2YwarvKcUuz+7aHw51fZS6/dyCaUFFWk/UAKm/c5MqgDNCo1Z2TsecXnYdZqdGbcI20D1PBlH3Q==}
     peerDependencies:
       oxlint: '>=1.56.0'
 
@@ -4606,7 +4606,7 @@ snapshots:
 
   '@emotion/weak-memoize@0.4.0': {}
 
-  '@evanpurkhiser/oxc-config@0.16.0(oxlint@1.62.0)':
+  '@evanpurkhiser/oxc-config@0.20.0(oxlint@1.62.0)':
     dependencies:
       oxlint: 1.62.0
 
