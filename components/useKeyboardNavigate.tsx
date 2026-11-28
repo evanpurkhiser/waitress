@@ -15,6 +15,26 @@ interface Props<T> {
   onEscape: (e: KeyboardEvent) => void;
 }
 
+function nextFocusIndex(
+  current: number,
+  length: number,
+  key: 'ArrowUp' | 'ArrowDown',
+  jump: boolean,
+) {
+  if (current === -1) {
+    return 0;
+  }
+
+  const last = length - 1;
+  const delta = key === 'ArrowUp' ? -1 : 1;
+  if (jump) {
+    return delta === -1 ? 0 : last;
+  }
+
+  const next = (current + delta) % length;
+  return next >= 0 ? next : last;
+}
+
 /**
  * Navigate a list of items using the up/down arrow and ^j/^k keys
  */
@@ -59,32 +79,13 @@ function useKeyboardNavigate<T>({list, onSelect, onEscape}: Props<T>) {
                 : e.key;
 
       // Does nothing for everything except arrow keys
-      if (!['ArrowUp', 'ArrowDown'].includes(key)) {
+      if (key !== 'ArrowUp' && key !== 'ArrowDown') {
         return;
       }
 
       e.preventDefault();
 
-      // Nothing focused? Start from the first item
-      if (focusedIndex === -1) {
-        setFocusIndex(0);
-        return;
-      }
-
-      const endIndex = list.length - 1;
-      const indexDelta = key === 'ArrowUp' ? -1 : 1;
-
-      // Holding shift moves to the start or end
-      if (e.shiftKey) {
-        setFocusIndex(indexDelta === -1 ? 0 : endIndex);
-        return;
-      }
-
-      // Compute wraparound
-      const newIndex = (focusedIndex + indexDelta) % list.length;
-
-      // Reverse wraparound to the end
-      setFocusIndex(newIndex >= 0 ? newIndex : endIndex);
+      setFocusIndex(nextFocusIndex(focusedIndex, list.length, key, e.shiftKey));
     },
     [setFocusIndex, focusedIndex, focused, list.length, onSelect, onEscape],
   );

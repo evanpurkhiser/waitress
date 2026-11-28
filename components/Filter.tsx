@@ -43,19 +43,10 @@ function Filter() {
         return;
       }
 
-      // Backspace triggers focus
-      if (e.key === 'Backspace') {
-        inputRef.current.focus();
-        return;
-      }
-
-      // Ignore anything that doesn't look like it could be part of a filename
-      if (e.key.match(KEY_REGEX) === null) {
-        return;
-      }
-
-      // Ignore with modifiers
-      if (e.altKey || e.metaKey || e.ctrlKey) {
+      // Backspace focuses the input even with modifiers held.
+      const typingFilename =
+        KEY_REGEX.test(e.key) && !e.altKey && !e.metaKey && !e.ctrlKey;
+      if (e.key !== 'Backspace' && !typingFilename) {
         return;
       }
 

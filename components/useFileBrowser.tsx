@@ -31,14 +31,8 @@ function locate(object: TreeNode, path: string[]) {
   return result ?? emptyTree;
 }
 
-/**
- * Hook used to provide file listing / navigation within a file tree
- */
-function useFileBrowser() {
+function useFileTree() {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
-
-  const [path, setPath] = useState<string[]>([]);
-  const [lastPath, setLastPath] = useState<string[]>([]);
 
   const [tree, setTree] = useState(emptyTree);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +67,17 @@ function useFileBrowser() {
     abortController.current.abort();
     abortController.current = new AbortController();
   }, []);
+
+  return {tree, isFirstLoad, isLoading, fetchTree, cancelInFlight};
+}
+
+/**
+ * Hook used to provide file listing / navigation within a file tree
+ */
+function useFileBrowser() {
+  const [path, setPath] = useState<string[]>([]);
+  const [lastPath, setLastPath] = useState<string[]>([]);
+  const {tree, isFirstLoad, isLoading, fetchTree, cancelInFlight} = useFileTree();
 
   /**
    * Handle updates to the path
